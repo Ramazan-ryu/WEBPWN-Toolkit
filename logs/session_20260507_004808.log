@@ -1,0 +1,2 @@
+2026-05-07 00:48:52,156 | INFO | Target configured: http://juiceshop.akto.io
+2026-05-07 00:49:28,344 | WARNING | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<HTTPConnection(host='juiceshop.akto.io', port=80) at 0x174770ad550>, 'Connection to juiceshop.akto.io timed out. (connect timeout=10)')': /.well-known/openid-configuration

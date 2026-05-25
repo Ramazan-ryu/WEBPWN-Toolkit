@@ -1,0 +1,256 @@
+{
+  "https://juiceshop.akto.io/#/": {
+    "ts": 1779716757.9318802,
+    "cves": []
+  },
+  "not disclosed": {
+    "ts": 1778614311.55169,
+    "cves": [
+      {
+        "cve_id": "CVE-2006-3147",
+        "score": 6.5,
+        "severity": "medium",
+        "desc": "Unspecified vulnerability in Hosting Controller before 6.1 (aka Hotfix 3.2) allows remote authenticated attackers to gain host admin privileges, list all resellers, or change resellers' passwords via "
+      },
+      {
+        "cve_id": "CVE-2008-4299",
+        "score": 5.0,
+        "severity": "medium",
+        "desc": "A certain ActiveX control in the Microsoft Internet Authentication Service (IAS) Helper COM Component in iashlpr.dll allows remote attackers to cause a denial of service (browser crash) via a large in"
+      },
+      {
+        "cve_id": "CVE-2008-4300",
+        "score": 5.0,
+        "severity": "medium",
+        "desc": "A certain ActiveX control in adsiis.dll in Microsoft Internet Information Services (IIS) allows remote attackers to cause a denial of service (browser crash) via a long string in the second argument t"
+      },
+      {
+        "cve_id": "CVE-2008-4765",
+        "score": 7.5,
+        "severity": "high",
+        "desc": "SQL injection vulnerability in pollBooth.php in osCommerce Poll Booth Add-On 2.0 allows remote attackers to execute arbitrary SQL commands via the pollID parameter in a results operation.  NOTE: this "
+      },
+      {
+        "cve_id": "CVE-2008-4804",
+        "score": 7.5,
+        "severity": "high",
+        "desc": "SQL injection vulnerability in the Gallery module 1.3 for PHP-Nuke allows remote attackers to execute arbitrary SQL commands via the aid parameter in a showalbum action to index.php.  NOTE: some of th"
+      }
+    ]
+  },
+  "none detected": {
+    "ts": 1778512044.5219865,
+    "cves": [
+      {
+        "cve_id": "CVE-2012-5661",
+        "score": 0.0,
+        "severity": "info",
+        "desc": "Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: None.  Reason: This candidate is a reservation duplicate that was detected before disclosure.  Notes: None"
+      },
+      {
+        "cve_id": "CVE-2024-47701",
+        "score": 7.8,
+        "severity": "high",
+        "desc": "In the Linux kernel, the following vulnerability has been resolved:\n\next4: avoid OOB when system.data xattr changes underneath the filesystem\n\nWhen looking up for an entry in an inlined directory, if "
+      },
+      {
+        "cve_id": "CVE-2025-39915",
+        "score": 5.5,
+        "severity": "medium",
+        "desc": "In the Linux kernel, the following vulnerability has been resolved:\n\nnet: phy: transfer phy_config_inband() locking responsibility to phylink\n\nProblem description\n===================\n\nLockdep reports "
+      },
+      {
+        "cve_id": "CVE-2023-53692",
+        "score": 0.0,
+        "severity": "info",
+        "desc": "In the Linux kernel, the following vulnerability has been resolved:\n\next4: fix use-after-free read in ext4_find_extent for bigalloc + inline\n\nSyzbot found the following issue:\nloop0: detected capacity"
+      },
+      {
+        "cve_id": "CVE-2025-40026",
+        "score": 0.0,
+        "severity": "info",
+        "desc": "In the Linux kernel, the following vulnerability has been resolved:\n\nKVM: x86: Don't (re)check L1 intercepts when completing userspace I/O\n\nWhen completing emulation of instruction that generated a us"
+      }
+    ]
+  },
+  "cookie missing httponly flag": {
+    "ts": 1778097232.134112,
+    "cves": [
+      {
+        "cve_id": "CVE-2018-12302",
+        "score": 6.1,
+        "severity": "medium",
+        "desc": "Missing HTTPOnly flag on session cookies in the Seagate NAS OS version 4.3.15.1 web application allows attackers to steal session tokens via cross-site scripting."
+      },
+      {
+        "cve_id": "CVE-2020-6267",
+        "score": 5.4,
+        "severity": "medium",
+        "desc": "Some sensitive cookies in SAP Disclosure Management, version 10.1, are missing HttpOnly flag, leading to sensitive cookie without Http Only flag."
+      },
+      {
+        "cve_id": "CVE-2021-42115",
+        "score": 8.1,
+        "severity": "high",
+        "desc": "Missing HTTPOnly flag in Web Applications operating on Business-DNA Solutions GmbH\u2019s TopEase\u00ae Platform Version <= 7.1.27 allows an unauthenticated remote attacker to escalate privileges from unauthent"
+      },
+      {
+        "cve_id": "CVE-2021-27764",
+        "score": 7.4,
+        "severity": "high",
+        "desc": "Cookie without HTTPONLY flag set. NUMBER cookie(s) was set without Secure or HTTPOnly flags. The images show the cookie with the missing flag. (WebUI)"
+      },
+      {
+        "cve_id": "CVE-2024-41685",
+        "score": 7.5,
+        "severity": "high",
+        "desc": "This vulnerability exists in SyroTech SY-GPON-1110-WDONT Router due to missing HTTPOnly flag for the session cookies associated with the router's web management interface. An attacker with remote acce"
+      }
+    ]
+  },
+  "https://holbertonschool.az/": {
+    "ts": 1778512037.94348,
+    "cves": []
+  },
+  "nginx 1.24.0": {
+    "ts": 1778512040.441661,
+    "cves": []
+  },
+  "next.js": {
+    "ts": 1778512042.4878905,
+    "cves": [
+      {
+        "cve_id": "CVE-2017-16877",
+        "score": 7.5,
+        "severity": "high",
+        "desc": "ZEIT Next.js before 2.4.1 has directory traversal under the /_next and /static request namespace, allowing attackers to obtain sensitive information."
+      },
+      {
+        "cve_id": "CVE-2018-6184",
+        "score": 7.5,
+        "severity": "high",
+        "desc": "ZEIT Next.js 4 before 4.2.3 has Directory Traversal under the /_next request namespace."
+      },
+      {
+        "cve_id": "CVE-2018-18282",
+        "score": 6.1,
+        "severity": "medium",
+        "desc": "Next.js 7.0.0 and 7.0.1 has XSS via the 404 or 500 /_error page."
+      },
+      {
+        "cve_id": "CVE-2020-5284",
+        "score": 4.4,
+        "severity": "medium",
+        "desc": "Next.js versions before 9.3.2 have a directory traversal vulnerability. Attackers could craft special requests to access files in the dist directory (.next). This does not affect files outside of the "
+      },
+      {
+        "cve_id": "CVE-2020-15242",
+        "score": 4.7,
+        "severity": "medium",
+        "desc": "Next.js versions >=9.5.0 and <9.5.4 are vulnerable to an Open Redirect. Specially encoded paths could be used with the trailing slash redirect to allow an open redirect to occur to an external site. I"
+      }
+    ]
+  },
+  "http://holbertonschool.az": {
+    "ts": 1779727885.8813777,
+    "cves": []
+  },
+  "https://juiceshop.akto.io": {
+    "ts": 1778097228.1957257,
+    "cves": []
+  },
+  "https://www.aztu.edu.az/": {
+    "ts": 1778102987.7774713,
+    "cves": []
+  },
+  "https://admiu.edu.az/": {
+    "ts": 1778534509.8892548,
+    "cves": []
+  },
+  "apache": {
+    "ts": 1778534512.0679228,
+    "cves": [
+      {
+        "cve_id": "CVE-1999-0236",
+        "score": 7.5,
+        "severity": "high",
+        "desc": "ScriptAlias directory in NCSA and Apache httpd allowed attackers to read CGI programs."
+      },
+      {
+        "cve_id": "CVE-1999-0071",
+        "score": 7.5,
+        "severity": "high",
+        "desc": "Apache httpd cookie buffer overflow for versions 1.1.1 and earlier."
+      },
+      {
+        "cve_id": "CVE-1999-0107",
+        "score": 5.0,
+        "severity": "medium",
+        "desc": "Buffer overflow in Apache 1.2.5 and earlier allows a remote attacker to cause a denial of service with a large number of GET requests containing a large number of / characters."
+      },
+      {
+        "cve_id": "CVE-1999-1199",
+        "score": 10.0,
+        "severity": "critical",
+        "desc": "Apache WWW server 1.3.1 and earlier allows remote attackers to cause a denial of service (resource exhaustion) via a large number of MIME headers with the same name, aka the \"sioux\" vulnerability."
+      },
+      {
+        "cve_id": "CVE-1999-0448",
+        "score": 5.0,
+        "severity": "medium",
+        "desc": "IIS 4.0 and Apache log HTTP request methods, regardless of how long they are, allowing a remote attacker to hide the URL they really request."
+      }
+    ]
+  },
+  "wordpress": {
+    "ts": 1778534514.3309562,
+    "cves": [
+      {
+        "cve_id": "CVE-2004-1559",
+        "score": 4.3,
+        "severity": "medium",
+        "desc": "Multiple cross-site scripting (XSS) vulnerabilities in Wordpress 1.2 allow remote attackers to inject arbitrary web script or HTML via the (1) redirect_to, text, popupurl, or popuptitle parameters to "
+      },
+      {
+        "cve_id": "CVE-2004-1584",
+        "score": 5.0,
+        "severity": "medium",
+        "desc": "CRLF injection vulnerability in wp-login.php in WordPress 1.2 allows remote attackers to perform HTTP Response Splitting attacks to modify expected HTML content from the server via the text parameter."
+      },
+      {
+        "cve_id": "CVE-2005-1102",
+        "score": 6.8,
+        "severity": "medium",
+        "desc": "Multiple cross-site scripting (XSS) vulnerabilities in template-functions-post.php in WordPress 1.5 and earlier allow remote attackers to execute arbitrary commands via the (1) content or (2) title of"
+      },
+      {
+        "cve_id": "CVE-2005-1687",
+        "score": 7.5,
+        "severity": "high",
+        "desc": "SQL injection vulnerability in wp-trackback.php in Wordpress 1.5 and earlier allows remote attackers to execute arbitrary SQL commands via the tb_id parameter."
+      },
+      {
+        "cve_id": "CVE-2005-1688",
+        "score": 5.3,
+        "severity": "medium",
+        "desc": "Wordpress 1.5 and earlier allows remote attackers to obtain sensitive information via a direct request to files in (1) wp-content/themes/, (2) wp-includes/, or (3) wp-admin/, which reveal the path in "
+      }
+    ]
+  },
+  "https://lms.aztu.edu.az/profile": {
+    "ts": 1778614310.1824667,
+    "cves": []
+  },
+  "https://sso.aztu.edu.az/": {
+    "ts": 1778616085.9981844,
+    "cves": []
+  },
+  "https://juiceshop.akto.io/": {
+    "ts": 1779721987.3155515,
+    "cves": []
+  },
+  "http://itsecgames.com/": {
+    "ts": 1779725762.995752,
+    "cves": []
+  }
+}

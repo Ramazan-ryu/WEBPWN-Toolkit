@@ -1,0 +1,9 @@
+{
+  "name": "20260520_151004",
+  "target": "https://juiceshop.akto.io/#/",
+  "domain": "juiceshop.akto.io",
+  "threads": 50,
+  "timeout": 20,
+  "findings": [],
+  "start_time": "2026-05-20T15:10:04.215146"
+}

@@ -1,0 +1,432 @@
+{
+  "name": "20260512_192356",
+  "target": "https://lms.aztu.edu.az/profile",
+  "domain": "lms.aztu.edu.az",
+  "threads": 20,
+  "timeout": 15,
+  "findings": [
+    {
+      "module": "Subdomain Enum",
+      "severity": "info",
+      "data": []
+    },
+    {
+      "module": "Port Scan",
+      "severity": "info",
+      "data": [
+        {
+          "port": 53,
+          "state": "open",
+          "service": "DNS",
+          "banner": "",
+          "risk": "low"
+        },
+        {
+          "port": 80,
+          "state": "open",
+          "service": "HTTP",
+          "banner": "HTTP/1.1 403 Forbidden\r",
+          "risk": "medium"
+        },
+        {
+          "port": 443,
+          "state": "open",
+          "service": "HTTPS",
+          "banner": "HTTP/1.1 400 Bad Request\r",
+          "risk": "low"
+        },
+        {
+          "port": 8080,
+          "state": "open",
+          "service": "HTTP Proxy",
+          "banner": "HTTP/1.1 403 Forbidden\r",
+          "risk": "medium"
+        },
+        {
+          "port": 8443,
+          "state": "open",
+          "service": "HTTPS Alt",
+          "banner": "HTTP/1.1 400 Bad Request\r",
+          "risk": "low"
+        }
+      ]
+    },
+    {
+      "module": "Tech Detect",
+      "severity": "info",
+      "data": {
+        "url": "https://lms.aztu.edu.az/profile",
+        "status_code": 200,
+        "server": [
+          "Not disclosed"
+        ],
+        "cms_frameworks": [
+          "None detected"
+        ],
+        "javascript_libs": [
+          "None detected"
+        ],
+        "security_headers": {
+          "Strict-Transport-Security": "\u274c MISSING \u2014 Protects against MITM / protocol downgrade",
+          "X-Frame-Options": "\u274c MISSING \u2014 Prevents clickjacking",
+          "X-Content-Type-Options": "\u274c MISSING \u2014 Prevents MIME-type sniffing",
+          "Content-Security-Policy": "\u274c MISSING \u2014 Mitigates XSS & data injection",
+          "X-XSS-Protection": "\u274c MISSING \u2014 Old-browser XSS filter",
+          "Referrer-Policy": "\u274c MISSING \u2014 Controls referrer leakage",
+          "Permissions-Policy": "\u274c MISSING \u2014 Restricts browser feature access"
+        },
+        "cookie_issues": [
+          "None detected"
+        ],
+        "raw_headers": {
+          "Date": "Tue, 12 May 2026 19:30:04 GMT",
+          "Content-Type": "text/html",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "Server": "cloudflare",
+          "Last-Modified": "Tue, 05 May 2026 07:35:47 GMT",
+          "cf-cache-status": "DYNAMIC",
+          "Vary": "Accept-Encoding",
+          "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+          "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=osJVGPm3l9cAxwKl93haWWRpz3k%2BRHlmnh9UyWUj0zt1aa50martRxyxUSU%2BaMVMB1n3mQZHOGbnZ9hJWiPH6ZlAAF8IykGwuw8t43RpKhoZ2tg%2B8WfXs5wZJCb%2BgzNZTvw%3D\"}]}",
+          "Content-Encoding": "gzip",
+          "CF-RAY": "9fabd5fb5dc54c73-MXP"
+        }
+      }
+    },
+    {
+      "module": "Web Crawler",
+      "severity": "info",
+      "data": {
+        "pages": [
+          "https://lms.aztu.edu.az/profile"
+        ],
+        "forms": [],
+        "endpoints": [],
+        "secrets": [],
+        "js_endpoints": [],
+        "js_graphql": []
+      }
+    },
+    {
+      "module": "Cloud Hunter",
+      "severity": "info",
+      "data": [
+        {
+          "type": "AWS S3",
+          "url": "http://lms.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lms-staging.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lms-prod.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms-test",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lms-dev.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lms-public.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lms-media.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmsmedia.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lms-assets.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lms-test.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms-media",
+          "status": "Open",
+          "severity": "high"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lms.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lms-private.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms-public",
+          "status": "Open",
+          "severity": "high"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmsprod.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmsdev.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms-images",
+          "status": "Open",
+          "severity": "high"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms-staging",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lms-backup.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmsbackup.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lmsprod.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmspublic.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lmstest",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lmstest.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lmsmedia.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmsmedia.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms-private",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms-prod",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lmsprod",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms-backup",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lmsbackup",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms-assets",
+          "status": "Open",
+          "severity": "high"
+        },
+        {
+          "type": "AWS S3",
+          "url": "http://lmspublic.s3.amazonaws.com",
+          "status": "Exists (Access Denied)",
+          "severity": "info"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmsbackup.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmsprod.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmspublic.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "GCP Bucket",
+          "url": "https://storage.googleapis.com/lms-dev",
+          "status": "Open",
+          "severity": "high"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmsimages.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        },
+        {
+          "type": "Azure Blob",
+          "url": "https://lmsdev.blob.core.windows.net/",
+          "status": "Exists",
+          "severity": "info"
+        }
+      ]
+    },
+    {
+      "module": "ASN Enum",
+      "severity": "info",
+      "data": [
+        {
+          "type": "Infrastructure",
+          "severity": "info",
+          "evidence": "ASN: AS13335",
+          "detail": "Company: 104.21.32.0/20"
+        },
+        {
+          "type": "IP Prefixes",
+          "severity": "info",
+          "evidence": "Found 5502 CIDR blocks",
+          "detail": "2a09:bac0:71::/48, 172.64.68.0/24, 2a09:bac0:719::/48, 172.68.220.0/24, 2400:cb00:285::/48, 2400:cb00:a4b1::/48, 2400:cb00:cb89::/48, 2400:cb00:1048::/48, 2400:cb00:904::/48, 172.70.240.0/24..."
+        }
+      ]
+    },
+    {
+      "module": "GitHub Dorker",
+      "severity": "info",
+      "data": []
+    }
+  ],
+  "start_time": "2026-05-12T19:23:56.221028",
+  "auth_type": "form",
+  "tech_data": {
+    "url": "https://lms.aztu.edu.az/profile",
+    "status_code": 200,
+    "server": [
+      "Not disclosed"
+    ],
+    "cms_frameworks": [
+      "None detected"
+    ],
+    "javascript_libs": [
+      "None detected"
+    ],
+    "security_headers": {
+      "Strict-Transport-Security": "\u274c MISSING \u2014 Protects against MITM / protocol downgrade",
+      "X-Frame-Options": "\u274c MISSING \u2014 Prevents clickjacking",
+      "X-Content-Type-Options": "\u274c MISSING \u2014 Prevents MIME-type sniffing",
+      "Content-Security-Policy": "\u274c MISSING \u2014 Mitigates XSS & data injection",
+      "X-XSS-Protection": "\u274c MISSING \u2014 Old-browser XSS filter",
+      "Referrer-Policy": "\u274c MISSING \u2014 Controls referrer leakage",
+      "Permissions-Policy": "\u274c MISSING \u2014 Restricts browser feature access"
+    },
+    "cookie_issues": [
+      "None detected"
+    ],
+    "raw_headers": {
+      "Date": "Tue, 12 May 2026 19:30:04 GMT",
+      "Content-Type": "text/html",
+      "Transfer-Encoding": "chunked",
+      "Connection": "keep-alive",
+      "Server": "cloudflare",
+      "Last-Modified": "Tue, 05 May 2026 07:35:47 GMT",
+      "cf-cache-status": "DYNAMIC",
+      "Vary": "Accept-Encoding",
+      "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+      "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=osJVGPm3l9cAxwKl93haWWRpz3k%2BRHlmnh9UyWUj0zt1aa50martRxyxUSU%2BaMVMB1n3mQZHOGbnZ9hJWiPH6ZlAAF8IykGwuw8t43RpKhoZ2tg%2B8WfXs5wZJCb%2BgzNZTvw%3D\"}]}",
+      "Content-Encoding": "gzip",
+      "CF-RAY": "9fabd5fb5dc54c73-MXP"
+    }
+  },
+  "crawl_data": {
+    "pages": [
+      "https://lms.aztu.edu.az/profile"
+    ],
+    "forms": [],
+    "endpoints": [],
+    "secrets": [],
+    "js_endpoints": [],
+    "js_graphql": []
+  }
+}

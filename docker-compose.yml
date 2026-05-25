@@ -1,0 +1,11 @@
+services:
+  webpwn:
+    build: .
+    image: webpwn-toolkit:3.1.0
+    container_name: webpwn
+    volumes:
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - ./sessions:/app/sessions
+      - ./profiles:/app/profiles
+    # command: ["--target", "https://example.com", "--autopilot"]

