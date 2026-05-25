@@ -494,5 +494,7 @@ def on_cancel(data):
 # ── Entry ────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    print("\n  WebPwn Web UI — http://localhost:5000\n")
-    socketio.run(app, host="0.0.0.0", port=5000, debug=False, allow_unsafe_werkzeug=True)
+    port = int(os.environ.get("PORT", 5000))
+    host = os.environ.get("HOST", "0.0.0.0")
+    print(f"\n  WebPwn Web UI — http://{host}:{port}\n")
+    socketio.run(app, host=host, port=port, debug=False, allow_unsafe_werkzeug=True)

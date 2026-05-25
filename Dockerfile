@@ -40,5 +40,5 @@ COPY . .
 # Create necessary directories
 RUN mkdir -p logs reports sessions profiles tests
 
-# Default command
-ENTRYPOINT ["python", "main.py"]
+# Default command: run the web UI by default in the container
+ENTRYPOINT ["python", "web_server.py"]

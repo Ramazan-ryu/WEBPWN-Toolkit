@@ -1,0 +1,50 @@
+{
+  "name": "20260526_001228",
+  "target": "https://holbertonschool.az/",
+  "domain": "holbertonschool.az",
+  "threads": 10,
+  "timeout": 10,
+  "findings": [
+    {
+      "module": "Technology Fingerprinting",
+      "severity": "info",
+      "data": {
+        "url": "https://holbertonschool.az/",
+        "status_code": 200,
+        "server": [
+          "Nginx 1.24.0"
+        ],
+        "cms_frameworks": [
+          "Next.js"
+        ],
+        "javascript_libs": [
+          "None detected"
+        ],
+        "security_headers": {
+          "Strict-Transport-Security": "\u274c MISSING \u2014 Protects against MITM / protocol downgrade",
+          "X-Frame-Options": "\u274c MISSING \u2014 Prevents clickjacking",
+          "X-Content-Type-Options": "\u274c MISSING \u2014 Prevents MIME-type sniffing",
+          "Content-Security-Policy": "\u274c MISSING \u2014 Mitigates XSS & data injection",
+          "X-XSS-Protection": "\u274c MISSING \u2014 Old-browser XSS filter",
+          "Referrer-Policy": "\u274c MISSING \u2014 Controls referrer leakage",
+          "Permissions-Policy": "\u274c MISSING \u2014 Restricts browser feature access"
+        },
+        "cookie_issues": [
+          "None detected"
+        ],
+        "raw_headers": {
+          "Server": "nginx/1.24.0",
+          "Date": "Mon, 25 May 2026 20:12:44 GMT",
+          "Content-Type": "text/html; charset=utf-8",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "Vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Accept-Encoding",
+          "X-Powered-By": "Next.js",
+          "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+          "Content-Encoding": "gzip"
+        }
+      }
+    }
+  ],
+  "start_time": "2026-05-26T00:12:28.766902"
+}
