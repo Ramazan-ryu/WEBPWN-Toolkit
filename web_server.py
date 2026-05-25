@@ -19,7 +19,7 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__, static_folder="webui", static_url_path="")
-app.config["SECRET_KEY"] = "webpwn-secret-2024"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "webpwn-secret-2024")
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
