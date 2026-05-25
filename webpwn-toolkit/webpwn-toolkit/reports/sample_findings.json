@@ -1,0 +1,29 @@
+[
+  {
+    "url": "http://juice-shop:3000/admin/debug",
+    "type": "Admin Page Info Leak — Stack trace leak",
+    "severity": "high",
+    "detail": "Stack trace strings found in admin debug page response",
+    "evidence": "Exception in thread... at /path/to/file",
+    "owasp": "A05:2021 – Security Misconfiguration",
+    "cvss": 7.5
+  },
+  {
+    "url": "http://juice-shop:3000/admin/login",
+    "type": "Admin Login Panel Exposed",
+    "severity": "medium",
+    "detail": "Admin login form found at /admin/login — brute-force attempted, no weak creds found",
+    "evidence": "Login form present | tested 25 default creds",
+    "owasp": "A07:2021 – Identification and Authentication Failures",
+    "cvss": 5.3
+  },
+  {
+    "url": "http://juice-shop:3000/admin/users/1",
+    "type": "Admin IDOR",
+    "severity": "high",
+    "detail": "Admin endpoints returning user objects for sequential IDs — verify object-level access controls.",
+    "evidence": "HTTP 200 | JSON returned for /admin/users/1",
+    "owasp": "A01:2021 – Broken Access Control",
+    "cvss": 8.1
+  }
+]

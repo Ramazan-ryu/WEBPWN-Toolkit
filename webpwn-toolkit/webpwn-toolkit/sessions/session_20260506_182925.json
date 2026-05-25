@@ -1,0 +1,666 @@
+{
+  "name": "20260506_182925",
+  "target": "https://holbertonschool.az/",
+  "domain": "holbertonschool.az",
+  "threads": 100,
+  "timeout": 20,
+  "findings": [
+    {
+      "module": "Subdomain Enum",
+      "severity": "info",
+      "data": [
+        {
+          "subdomain": "www.holbertonschool.az",
+          "ips": [
+            "15.236.205.206"
+          ],
+          "cname": "holbertonschool.az.",
+          "source": "dns_bruteforce",
+          "status": "alive"
+        }
+      ]
+    },
+    {
+      "module": "Port Scan",
+      "severity": "info",
+      "data": [
+        {
+          "port": 22,
+          "state": "open",
+          "service": "SSH",
+          "banner": "SSH-2.0-OpenSSH_9.6p1 Ubuntu-3ubuntu13.16",
+          "risk": "medium"
+        },
+        {
+          "port": 53,
+          "state": "open",
+          "service": "DNS",
+          "banner": "",
+          "risk": "low"
+        },
+        {
+          "port": 80,
+          "state": "open",
+          "service": "HTTP",
+          "banner": "HTTP/1.1 301 Moved Permanently\r",
+          "risk": "medium"
+        },
+        {
+          "port": 443,
+          "state": "open",
+          "service": "HTTPS",
+          "banner": "HTTP/1.1 400 Bad Request\r",
+          "risk": "low"
+        }
+      ]
+    },
+    {
+      "module": "Tech Detect",
+      "severity": "info",
+      "data": {
+        "url": "https://holbertonschool.az/",
+        "status_code": 200,
+        "server": [
+          "Nginx 1.24.0"
+        ],
+        "cms_frameworks": [
+          "Next.js"
+        ],
+        "javascript_libs": [
+          "None detected"
+        ],
+        "security_headers": {
+          "Strict-Transport-Security": "\u274c MISSING \u2014 Protects against MITM / protocol downgrade",
+          "X-Frame-Options": "\u274c MISSING \u2014 Prevents clickjacking",
+          "X-Content-Type-Options": "\u274c MISSING \u2014 Prevents MIME-type sniffing",
+          "Content-Security-Policy": "\u274c MISSING \u2014 Mitigates XSS & data injection",
+          "X-XSS-Protection": "\u274c MISSING \u2014 Old-browser XSS filter",
+          "Referrer-Policy": "\u274c MISSING \u2014 Controls referrer leakage",
+          "Permissions-Policy": "\u274c MISSING \u2014 Restricts browser feature access"
+        },
+        "cookie_issues": [
+          "None detected"
+        ],
+        "raw_headers": {
+          "Server": "nginx/1.24.0",
+          "Date": "Wed, 06 May 2026 14:30:24 GMT",
+          "Content-Type": "text/html; charset=utf-8",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "Vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Accept-Encoding",
+          "X-Powered-By": "Next.js",
+          "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+          "Content-Encoding": "gzip"
+        }
+      }
+    },
+    {
+      "module": "Web Crawler",
+      "severity": "info",
+      "data": {
+        "pages": [
+          "https://holbertonschool.az/aze-admissions@holbertonschool.com",
+          "https://holbertonschool.az/_next/static/chunks/2117-7477cf2b600c6852.js",
+          "https://holbertonschool.az/_next/static/chunks/6303-b3b3fcc4edae909b.js",
+          "https://holbertonschool.az/_next/static/chunks/1268-25eddd6ee350aa27.js",
+          "https://holbertonschool.az/_next/static/chunks/7463-d672d546dc709766.js",
+          "https://holbertonschool.az",
+          "https://holbertonschool.az/_next/static/chunks/870fdd6f-33362eae6e47c7c5.js",
+          "https://holbertonschool.az/_next/static/chunks/polyfills-42372ed130431b0a.js",
+          "https://holbertonschool.az/_next/static/chunks/fd9d1056-f2d7a298b3c59346.js",
+          "https://holbertonschool.az/_next/static/chunks/6498-8578de01db2d8227.js",
+          "https://holbertonschool.az/_next/static/chunks/webpack-521ac474fa2fa6d1.js",
+          "https://holbertonschool.az/privacy-policy",
+          "https://holbertonschool.az/7/24",
+          "https://holbertonschool.az/_next/static/chunks/app/page-bd31a2ada00f0ae8.js",
+          "https://holbertonschool.az/_next/static/chunks/app/layout-43879109b994f6df.js",
+          "https://holbertonschool.az/_next/static/chunks/app/privacy-policy/page-b0ffee9eff439393.js",
+          "https://holbertonschool.az/_next/static/chunks/main-app-31c7029f623b0a9f.js",
+          "https://holbertonschool.az/_next/static/chunks/3683-1442f50e035766e7.js",
+          "https://holbertonschool.az/_next/static/chunks/c15bf2b0-19ff368ffb2158b2.js"
+        ],
+        "forms": [],
+        "endpoints": []
+      }
+    },
+    {
+      "url": "https://holbertonschool.az/api-docs/",
+      "path": "api-docs/",
+      "status_code": 200,
+      "size": 3106,
+      "severity": "medium",
+      "detail": "Path accessible with HTTP 200",
+      "evidence": "HTTP 200 | Size: 3106",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 5.3,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://holbertonschool.az/admin/",
+      "path": "admin/",
+      "status_code": 200,
+      "size": 906,
+      "severity": "medium",
+      "detail": "Path accessible with HTTP 200",
+      "evidence": "HTTP 200 | Size: 906",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 5.3,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://holbertonschool.az/api",
+      "path": "api",
+      "status_code": 301,
+      "size": 169,
+      "severity": "info",
+      "detail": "Path accessible with HTTP 301",
+      "evidence": "HTTP 301 | Size: 169",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://holbertonschool.az/admin",
+      "path": "admin",
+      "status_code": 301,
+      "size": 169,
+      "severity": "info",
+      "detail": "Path accessible with HTTP 301",
+      "evidence": "HTTP 301 | Size: 169",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://holbertonschool.az/api-docs",
+      "path": "api-docs",
+      "status_code": 301,
+      "size": 169,
+      "severity": "info",
+      "detail": "Path accessible with HTTP 301",
+      "evidence": "HTTP 301 | Size: 169",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 0.0,
+      "remediation": "Review if this path should be publicly accessible. Add authentication if needed."
+    },
+    {
+      "url": "https://holbertonschool.az/admin/",
+      "type": "Unauthenticated Admin Access",
+      "severity": "critical",
+      "detail": "Admin path accessible without authentication: /admin/",
+      "evidence": "HTTP 200 on https://holbertonschool.az/admin/",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 9.1,
+      "remediation": "Restrict admin paths to authenticated and authorized users only."
+    },
+    {
+      "url": "https://holbertonschool.az",
+      "type": "Missing Header: Content-Security-Policy",
+      "severity": "high",
+      "detail": "CSP prevents XSS and data injection attacks by controlling allowed resource sources.",
+      "evidence": "Header 'Content-Security-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Add a strict CSP: 'default-src \\'self\\'; script-src \\'self\\'; object-src \\'none\\';'"
+    },
+    {
+      "url": "https://holbertonschool.az",
+      "type": "Missing Header: Strict-Transport-Security",
+      "severity": "high",
+      "detail": "HSTS forces HTTPS connections and prevents SSL-stripping attacks.",
+      "evidence": "Header 'Strict-Transport-Security' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Add: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"
+    },
+    {
+      "url": "https://holbertonschool.az",
+      "type": "Missing Header: X-Frame-Options",
+      "severity": "medium",
+      "detail": "Missing X-Frame-Options allows clickjacking attacks (embedding site in iframes).",
+      "evidence": "Header 'X-Frame-Options' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 6.1,
+      "remediation": "Add: X-Frame-Options: DENY  (or use CSP frame-ancestors directive instead)"
+    },
+    {
+      "url": "https://holbertonschool.az",
+      "type": "Missing Header: X-Content-Type-Options",
+      "severity": "low",
+      "detail": "Missing header allows MIME-type sniffing, enabling content injection.",
+      "evidence": "Header 'X-Content-Type-Options' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Add: X-Content-Type-Options: nosniff"
+    },
+    {
+      "url": "https://holbertonschool.az",
+      "type": "Missing Header: Referrer-Policy",
+      "severity": "low",
+      "detail": "Missing Referrer-Policy may leak sensitive URL information to third parties.",
+      "evidence": "Header 'Referrer-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Add: Referrer-Policy: strict-origin-when-cross-origin"
+    },
+    {
+      "url": "https://holbertonschool.az",
+      "type": "Missing Header: Permissions-Policy",
+      "severity": "info",
+      "detail": "Missing Permissions-Policy allows access to powerful browser APIs (camera, mic, etc.).",
+      "evidence": "Header 'Permissions-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Permissions-Policy: geolocation=(), camera=(), microphone=()"
+    },
+    {
+      "url": "https://holbertonschool.az",
+      "type": "Missing Header: Cross-Origin-Opener-Policy",
+      "severity": "info",
+      "detail": "Missing COOP allows cross-origin pages to access window references.",
+      "evidence": "Header 'Cross-Origin-Opener-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Cross-Origin-Opener-Policy: same-origin"
+    },
+    {
+      "url": "https://holbertonschool.az",
+      "type": "Missing Header: Cross-Origin-Resource-Policy",
+      "severity": "info",
+      "detail": "Missing CORP allows cross-origin pages to load this site's resources.",
+      "evidence": "Header 'Cross-Origin-Resource-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Cross-Origin-Resource-Policy: same-origin"
+    },
+    {
+      "url": "https://holbertonschool.az",
+      "type": "Information Disclosure: X-Powered-By",
+      "severity": "info",
+      "detail": "Server technology disclosure may aid attacker fingerprinting.",
+      "evidence": "X-Powered-By: Next.js",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Remove X-Powered-By header from all responses."
+    },
+    {
+      "url": "https://holbertonschool.az",
+      "type": "Information Disclosure: Server",
+      "severity": "info",
+      "detail": "Server version disclosure may aid attacker fingerprinting.",
+      "evidence": "Server: nginx/1.24.0",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Configure web server to omit or genericize the Server header."
+    },
+    {
+      "type": "WAF Detected",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "detail": "Web Application Firewall identified: Nginx (generic block). 0/8 attack payloads blocked.",
+      "evidence": "WAF: Nginx (generic block) | Blocked: 0/8",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "WAF 'Nginx (generic block)' detected \u2014 bypass techniques generated below."
+    },
+    {
+      "type": "WAF Bypass Technique \u2014 Nginx (generic block)",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Encode payloads: URL / double-URL / HTML entity / Unicode",
+      "detail": "Bypass technique for Nginx (generic block): Encode payloads: URL / double-URL / HTML entity / Unicode",
+      "evidence": "Recommended bypass against Nginx (generic block) WAF",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Update WAF rules and test against bypass vectors regularly."
+    },
+    {
+      "type": "WAF Bypass Technique \u2014 Nginx (generic block)",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Case variation: SeLeCt, UnIoN",
+      "detail": "Bypass technique for Nginx (generic block): Case variation: SeLeCt, UnIoN",
+      "evidence": "Recommended bypass against Nginx (generic block) WAF",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Update WAF rules and test against bypass vectors regularly."
+    },
+    {
+      "type": "WAF Bypass Technique \u2014 Nginx (generic block)",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Comment insertion: UN/**/ION SE/**/LECT",
+      "detail": "Bypass technique for Nginx (generic block): Comment insertion: UN/**/ION SE/**/LECT",
+      "evidence": "Recommended bypass against Nginx (generic block) WAF",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Update WAF rules and test against bypass vectors regularly."
+    },
+    {
+      "type": "WAF Bypass Technique \u2014 Nginx (generic block)",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "HTTP Parameter Pollution",
+      "detail": "Bypass technique for Nginx (generic block): HTTP Parameter Pollution",
+      "evidence": "Recommended bypass against Nginx (generic block) WAF",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Update WAF rules and test against bypass vectors regularly."
+    },
+    {
+      "type": "WAF Bypass Technique \u2014 Nginx (generic block)",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Null byte injection: %00",
+      "detail": "Bypass technique for Nginx (generic block): Null byte injection: %00",
+      "evidence": "Recommended bypass against Nginx (generic block) WAF",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Update WAF rules and test against bypass vectors regularly."
+    },
+    {
+      "type": "WAF Bypass Technique \u2014 Nginx (generic block)",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Content-Type switching: JSON/XML/multipart",
+      "detail": "Bypass technique for Nginx (generic block): Content-Type switching: JSON/XML/multipart",
+      "evidence": "Recommended bypass against Nginx (generic block) WAF",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Update WAF rules and test against bypass vectors regularly."
+    },
+    {
+      "type": "WAF Bypass Technique \u2014 Nginx (generic block)",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Slow HTTP techniques",
+      "detail": "Bypass technique for Nginx (generic block): Slow HTTP techniques",
+      "evidence": "Recommended bypass against Nginx (generic block) WAF",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Update WAF rules and test against bypass vectors regularly."
+    },
+    {
+      "type": "WAF Bypass Technique \u2014 Nginx (generic block)",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "IPv6 address in Host header",
+      "detail": "Bypass technique for Nginx (generic block): IPv6 address in Host header",
+      "evidence": "Recommended bypass against Nginx (generic block) WAF",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Update WAF rules and test against bypass vectors regularly."
+    },
+    {
+      "type": "WAF Bypass Payload \u2014 URL-encoded",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "URL-encoded",
+      "detail": "Encoded variant: %3Cscript%3Ealert%281%29%3C/script%3E",
+      "evidence": "Payload: %3Cscript%3Ealert%281%29%3C/script%3E",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Ensure WAF rules handle all encoding variants."
+    },
+    {
+      "type": "WAF Bypass Payload \u2014 Double URL-encoded",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Double URL-encoded",
+      "detail": "Encoded variant: %253Cscript%253Ealert%25281%2529%253C/script%253E",
+      "evidence": "Payload: %253Cscript%253Ealert%25281%2529%253C/script%253E",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Ensure WAF rules handle all encoding variants."
+    },
+    {
+      "type": "WAF Bypass Payload \u2014 HTML-entity",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "HTML-entity",
+      "detail": "Encoded variant: &lt;script&gt;alert(1)&lt;/script&gt;",
+      "evidence": "Payload: &lt;script&gt;alert(1)&lt;/script&gt;",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Ensure WAF rules handle all encoding variants."
+    },
+    {
+      "type": "WAF Bypass Payload \u2014 Unicode escape",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Unicode escape",
+      "detail": "Encoded variant: <script>alert(1)</script>",
+      "evidence": "Payload: <script>alert(1)</script>",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Ensure WAF rules handle all encoding variants."
+    },
+    {
+      "type": "WAF Bypass Payload \u2014 Hex (JS)",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Hex (JS)",
+      "detail": "Encoded variant: \\x3c\\x73\\x63\\x72\\x69\\x70\\x74\\x3e\\x61\\x6c\\x65\\x72\\x74\\x28\\x31\\x29\\x3c\\x2f\\x73\\x63\\x72\\x69\\x70\\x74\\x3e",
+      "evidence": "Payload: \\x3c\\x73\\x63\\x72\\x69\\x70\\x74\\x3e\\x61\\x6c\\x65\\x72\\x74\\x28\\x31\\x29\\x3c\\x2f\\x73\\x63\\x72\\x69\\x70\\x74\\x3e",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Ensure WAF rules handle all encoding variants."
+    },
+    {
+      "type": "WAF Bypass Payload \u2014 Base64",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Base64",
+      "detail": "Encoded variant: PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==",
+      "evidence": "Payload: PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Ensure WAF rules handle all encoding variants."
+    },
+    {
+      "type": "WAF Bypass Payload \u2014 Null-byte",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Null-byte",
+      "detail": "Encoded variant: \u0000<script>alert(1)\u0000</script>",
+      "evidence": "Payload: \u0000<script>alert(1)\u0000</script>",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Ensure WAF rules handle all encoding variants."
+    },
+    {
+      "type": "WAF Bypass Payload \u2014 Tab-obfuscated",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Tab-obfuscated",
+      "detail": "Encoded variant: <scr\tipt>alert(1)</scr\tipt>",
+      "evidence": "Payload: <scr\tipt>alert(1)</scr\tipt>",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Ensure WAF rules handle all encoding variants."
+    },
+    {
+      "type": "WAF Bypass Payload \u2014 Case-mixed",
+      "waf_name": "Nginx (generic block)",
+      "severity": "info",
+      "technique": "Case-mixed",
+      "detail": "Encoded variant: <sCrIpT>AlErT(1)</ScRiPt>",
+      "evidence": "Payload: <sCrIpT>AlErT(1)</ScRiPt>",
+      "owasp": "Informational",
+      "cvss": 0.0,
+      "remediation": "Ensure WAF rules handle all encoding variants."
+    },
+    {
+      "type": "CVE: CVE-2017-16877",
+      "technology": "Next.js",
+      "cve_id": "CVE-2017-16877",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "CVE-2017-16877 affects 'Next.js' \u2014 ZEIT Next.js before 2.4.1 has directory traversal under the /_next and /static request namespace, allowing attackers to obtain sensitive information.",
+      "evidence": "Technology: Next.js | CVE: CVE-2017-16877 | CVSS: 7.5",
+      "owasp": "A06:2021 \u2013 Vulnerable and Outdated Components",
+      "remediation": "Update 'Next.js' to the latest patched version. Check https://nvd.nist.gov/vuln/detail/CVE-2017-16877 for details."
+    },
+    {
+      "type": "CVE: CVE-2018-6184",
+      "technology": "Next.js",
+      "cve_id": "CVE-2018-6184",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "CVE-2018-6184 affects 'Next.js' \u2014 ZEIT Next.js 4 before 4.2.3 has Directory Traversal under the /_next request namespace.",
+      "evidence": "Technology: Next.js | CVE: CVE-2018-6184 | CVSS: 7.5",
+      "owasp": "A06:2021 \u2013 Vulnerable and Outdated Components",
+      "remediation": "Update 'Next.js' to the latest patched version. Check https://nvd.nist.gov/vuln/detail/CVE-2018-6184 for details."
+    },
+    {
+      "type": "CVE: CVE-2018-18282",
+      "technology": "Next.js",
+      "cve_id": "CVE-2018-18282",
+      "severity": "medium",
+      "cvss": 6.1,
+      "detail": "CVE-2018-18282 affects 'Next.js' \u2014 Next.js 7.0.0 and 7.0.1 has XSS via the 404 or 500 /_error page.",
+      "evidence": "Technology: Next.js | CVE: CVE-2018-18282 | CVSS: 6.1",
+      "owasp": "A06:2021 \u2013 Vulnerable and Outdated Components",
+      "remediation": "Update 'Next.js' to the latest patched version. Check https://nvd.nist.gov/vuln/detail/CVE-2018-18282 for details."
+    },
+    {
+      "type": "CVE: CVE-2020-5284",
+      "technology": "Next.js",
+      "cve_id": "CVE-2020-5284",
+      "severity": "medium",
+      "cvss": 4.4,
+      "detail": "CVE-2020-5284 affects 'Next.js' \u2014 Next.js versions before 9.3.2 have a directory traversal vulnerability. Attackers could craft special requests to access files in the dist directory (.next). This does not affect files outside of the ",
+      "evidence": "Technology: Next.js | CVE: CVE-2020-5284 | CVSS: 4.4",
+      "owasp": "A06:2021 \u2013 Vulnerable and Outdated Components",
+      "remediation": "Update 'Next.js' to the latest patched version. Check https://nvd.nist.gov/vuln/detail/CVE-2020-5284 for details."
+    },
+    {
+      "type": "CVE: CVE-2020-15242",
+      "technology": "Next.js",
+      "cve_id": "CVE-2020-15242",
+      "severity": "medium",
+      "cvss": 4.7,
+      "detail": "CVE-2020-15242 affects 'Next.js' \u2014 Next.js versions >=9.5.0 and <9.5.4 are vulnerable to an Open Redirect. Specially encoded paths could be used with the trailing slash redirect to allow an open redirect to occur to an external site. I",
+      "evidence": "Technology: Next.js | CVE: CVE-2020-15242 | CVSS: 4.7",
+      "owasp": "A06:2021 \u2013 Vulnerable and Outdated Components",
+      "remediation": "Update 'Next.js' to the latest patched version. Check https://nvd.nist.gov/vuln/detail/CVE-2020-15242 for details."
+    },
+    {
+      "type": "CVE: CVE-2012-5661",
+      "technology": "None detected",
+      "cve_id": "CVE-2012-5661",
+      "severity": "info",
+      "cvss": 0.0,
+      "detail": "CVE-2012-5661 affects 'None detected' \u2014 Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: None.  Reason: This candidate is a reservation duplicate that was detected before disclosure.  Notes: None",
+      "evidence": "Technology: None detected | CVE: CVE-2012-5661 | CVSS: 0.0",
+      "owasp": "A06:2021 \u2013 Vulnerable and Outdated Components",
+      "remediation": "Update 'None detected' to the latest patched version. Check https://nvd.nist.gov/vuln/detail/CVE-2012-5661 for details."
+    },
+    {
+      "type": "CVE: CVE-2024-47701",
+      "technology": "None detected",
+      "cve_id": "CVE-2024-47701",
+      "severity": "high",
+      "cvss": 7.8,
+      "detail": "CVE-2024-47701 affects 'None detected' \u2014 In the Linux kernel, the following vulnerability has been resolved:\n\next4: avoid OOB when system.data xattr changes underneath the filesystem\n\nWhen looking up for an entry in an inlined directory, if ",
+      "evidence": "Technology: None detected | CVE: CVE-2024-47701 | CVSS: 7.8",
+      "owasp": "A06:2021 \u2013 Vulnerable and Outdated Components",
+      "remediation": "Update 'None detected' to the latest patched version. Check https://nvd.nist.gov/vuln/detail/CVE-2024-47701 for details."
+    },
+    {
+      "type": "CVE: CVE-2025-39915",
+      "technology": "None detected",
+      "cve_id": "CVE-2025-39915",
+      "severity": "medium",
+      "cvss": 5.5,
+      "detail": "CVE-2025-39915 affects 'None detected' \u2014 In the Linux kernel, the following vulnerability has been resolved:\n\nnet: phy: transfer phy_config_inband() locking responsibility to phylink\n\nProblem description\n===================\n\nLockdep reports ",
+      "evidence": "Technology: None detected | CVE: CVE-2025-39915 | CVSS: 5.5",
+      "owasp": "A06:2021 \u2013 Vulnerable and Outdated Components",
+      "remediation": "Update 'None detected' to the latest patched version. Check https://nvd.nist.gov/vuln/detail/CVE-2025-39915 for details."
+    },
+    {
+      "type": "CVE: CVE-2023-53692",
+      "technology": "None detected",
+      "cve_id": "CVE-2023-53692",
+      "severity": "info",
+      "cvss": 0.0,
+      "detail": "CVE-2023-53692 affects 'None detected' \u2014 In the Linux kernel, the following vulnerability has been resolved:\n\next4: fix use-after-free read in ext4_find_extent for bigalloc + inline\n\nSyzbot found the following issue:\nloop0: detected capacity",
+      "evidence": "Technology: None detected | CVE: CVE-2023-53692 | CVSS: 0.0",
+      "owasp": "A06:2021 \u2013 Vulnerable and Outdated Components",
+      "remediation": "Update 'None detected' to the latest patched version. Check https://nvd.nist.gov/vuln/detail/CVE-2023-53692 for details."
+    },
+    {
+      "type": "CVE: CVE-2025-40026",
+      "technology": "None detected",
+      "cve_id": "CVE-2025-40026",
+      "severity": "info",
+      "cvss": 0.0,
+      "detail": "CVE-2025-40026 affects 'None detected' \u2014 In the Linux kernel, the following vulnerability has been resolved:\n\nKVM: x86: Don't (re)check L1 intercepts when completing userspace I/O\n\nWhen completing emulation of instruction that generated a us",
+      "evidence": "Technology: None detected | CVE: CVE-2025-40026 | CVSS: 0.0",
+      "owasp": "A06:2021 \u2013 Vulnerable and Outdated Components",
+      "remediation": "Update 'None detected' to the latest patched version. Check https://nvd.nist.gov/vuln/detail/CVE-2025-40026 for details."
+    }
+  ],
+  "start_time": "2026-05-06T18:29:25.387198",
+  "tech_data": {
+    "url": "https://holbertonschool.az/",
+    "status_code": 200,
+    "server": [
+      "Nginx 1.24.0"
+    ],
+    "cms_frameworks": [
+      "Next.js"
+    ],
+    "javascript_libs": [
+      "None detected"
+    ],
+    "security_headers": {
+      "Strict-Transport-Security": "\u274c MISSING \u2014 Protects against MITM / protocol downgrade",
+      "X-Frame-Options": "\u274c MISSING \u2014 Prevents clickjacking",
+      "X-Content-Type-Options": "\u274c MISSING \u2014 Prevents MIME-type sniffing",
+      "Content-Security-Policy": "\u274c MISSING \u2014 Mitigates XSS & data injection",
+      "X-XSS-Protection": "\u274c MISSING \u2014 Old-browser XSS filter",
+      "Referrer-Policy": "\u274c MISSING \u2014 Controls referrer leakage",
+      "Permissions-Policy": "\u274c MISSING \u2014 Restricts browser feature access"
+    },
+    "cookie_issues": [
+      "None detected"
+    ],
+    "raw_headers": {
+      "Server": "nginx/1.24.0",
+      "Date": "Wed, 06 May 2026 14:30:24 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Transfer-Encoding": "chunked",
+      "Connection": "keep-alive",
+      "Vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Accept-Encoding",
+      "X-Powered-By": "Next.js",
+      "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "Content-Encoding": "gzip"
+    }
+  },
+  "crawl_data": {
+    "pages": [
+      "https://holbertonschool.az/aze-admissions@holbertonschool.com",
+      "https://holbertonschool.az/_next/static/chunks/2117-7477cf2b600c6852.js",
+      "https://holbertonschool.az/_next/static/chunks/6303-b3b3fcc4edae909b.js",
+      "https://holbertonschool.az/_next/static/chunks/1268-25eddd6ee350aa27.js",
+      "https://holbertonschool.az/_next/static/chunks/7463-d672d546dc709766.js",
+      "https://holbertonschool.az",
+      "https://holbertonschool.az/_next/static/chunks/870fdd6f-33362eae6e47c7c5.js",
+      "https://holbertonschool.az/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "https://holbertonschool.az/_next/static/chunks/fd9d1056-f2d7a298b3c59346.js",
+      "https://holbertonschool.az/_next/static/chunks/6498-8578de01db2d8227.js",
+      "https://holbertonschool.az/_next/static/chunks/webpack-521ac474fa2fa6d1.js",
+      "https://holbertonschool.az/privacy-policy",
+      "https://holbertonschool.az/7/24",
+      "https://holbertonschool.az/_next/static/chunks/app/page-bd31a2ada00f0ae8.js",
+      "https://holbertonschool.az/_next/static/chunks/app/layout-43879109b994f6df.js",
+      "https://holbertonschool.az/_next/static/chunks/app/privacy-policy/page-b0ffee9eff439393.js",
+      "https://holbertonschool.az/_next/static/chunks/main-app-31c7029f623b0a9f.js",
+      "https://holbertonschool.az/_next/static/chunks/3683-1442f50e035766e7.js",
+      "https://holbertonschool.az/_next/static/chunks/c15bf2b0-19ff368ffb2158b2.js"
+    ],
+    "forms": [],
+    "endpoints": []
+  }
+}

