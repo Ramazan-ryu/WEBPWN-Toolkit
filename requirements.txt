@@ -27,3 +27,8 @@ flake8>=6.0.0
 pytest>=7.4.0
 black>=23.3.0
 flake8>=6.0.0
+
+# Web UI dependencies
+flask>=2.2.0
+flask-cors>=3.0.10
+flask-socketio>=6.2.0
