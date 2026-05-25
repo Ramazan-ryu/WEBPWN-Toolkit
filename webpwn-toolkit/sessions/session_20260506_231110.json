@@ -1,9 +1,0 @@
-{
-  "name": "20260506_231110",
-  "target": "http://example.com",
-  "domain": "example.com",
-  "threads": 4,
-  "timeout": 0,
-  "findings": [],
-  "start_time": "2026-05-06T23:11:10.989021"
-}

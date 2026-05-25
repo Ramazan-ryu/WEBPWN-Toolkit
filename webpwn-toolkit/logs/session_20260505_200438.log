@@ -1,6 +1,0 @@
-2026-05-05 20:06:56,318 | INFO | Target configured: https://tap.az/
-2026-05-05 20:07:07,888 | INFO | Auth configured: none
-2026-05-05 20:07:31,572 | INFO | Subdomain enum: 14 found
-2026-05-05 20:07:51,613 | INFO | Port scan: 5 open
-2026-05-05 20:07:52,126 | INFO | Tech detection done
-2026-05-05 20:09:19,641 | INFO | Crawl: 200 pages

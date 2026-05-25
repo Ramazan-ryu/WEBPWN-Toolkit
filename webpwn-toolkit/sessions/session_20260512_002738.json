@@ -1,9 +1,0 @@
-{
-  "name": "20260512_002738",
-  "target": "http://localhost",
-  "domain": "localhost",
-  "threads": 10,
-  "timeout": 10,
-  "findings": [],
-  "start_time": "2026-05-12T00:27:38.687055"
-}
