@@ -1,0 +1,278 @@
+{
+  "name": "20260526_004908",
+  "target": "https://www.ada.edu.az/",
+  "domain": "www.ada.edu.az",
+  "threads": 20,
+  "timeout": 25,
+  "findings": [
+    {
+      "port": 80,
+      "state": "open",
+      "service": "HTTP",
+      "banner": "HTTP/1.1 301 Moved Permanently\r",
+      "risk": "medium"
+    },
+    {
+      "port": 443,
+      "state": "open",
+      "service": "HTTPS",
+      "banner": "HTTP/1.1 400 Bad Request\r",
+      "risk": "low"
+    },
+    {
+      "module": "Web Crawler",
+      "severity": "info",
+      "data": {
+        "pages": [
+          "https://www.ada.edu.az"
+        ],
+        "forms": [],
+        "endpoints": [],
+        "secrets": [],
+        "js_endpoints": [],
+        "js_graphql": []
+      }
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://www-staging.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/www-dev",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/www-test",
+      "status": "Open",
+      "severity": "high"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://www.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/www",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://www-assets.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/www-assets",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://www-prod.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://www-public.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/www-images",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/www-static",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://wwwdev.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://www-test.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/wwwdev",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://www-static.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "Azure Blob",
+      "url": "https://wwwstaging.blob.core.windows.net/",
+      "status": "Exists",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://www-backup.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/www-staging",
+      "status": "Open",
+      "severity": "high"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://www-images.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/wwwtest",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "Azure Blob",
+      "url": "https://wwwbackup.blob.core.windows.net/",
+      "status": "Exists",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://wwwtest.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://wwwassets.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://wwwmedia.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/wwwpublic",
+      "status": "Open",
+      "severity": "high"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://wwwbackup.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/www-prod",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "AWS S3",
+      "url": "http://wwwpublic.s3.amazonaws.com",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "Azure Blob",
+      "url": "https://wwwstaging.blob.core.windows.net/",
+      "status": "Exists",
+      "severity": "info"
+    },
+    {
+      "type": "Azure Blob",
+      "url": "https://wwwpublic.blob.core.windows.net/",
+      "status": "Exists",
+      "severity": "info"
+    },
+    {
+      "type": "Azure Blob",
+      "url": "https://wwwbackup.blob.core.windows.net/",
+      "status": "Exists",
+      "severity": "info"
+    },
+    {
+      "type": "Azure Blob",
+      "url": "https://wwwtest.blob.core.windows.net/",
+      "status": "Exists",
+      "severity": "info"
+    },
+    {
+      "type": "Azure Blob",
+      "url": "https://wwwstatic.blob.core.windows.net/",
+      "status": "Exists",
+      "severity": "info"
+    },
+    {
+      "type": "Azure Blob",
+      "url": "https://wwwpublic.blob.core.windows.net/",
+      "status": "Exists",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/wwwbackup",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/www-backup",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "Azure Blob",
+      "url": "https://wwwtest.blob.core.windows.net/",
+      "status": "Exists",
+      "severity": "info"
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/www-public",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "Infrastructure",
+      "severity": "info",
+      "evidence": "ASN: AS215148",
+      "detail": "Company: 31.171.108.0/24"
+    },
+    {
+      "type": "IP Prefixes",
+      "severity": "info",
+      "evidence": "Found 104 CIDR blocks",
+      "detail": "85.132.1.0/24, 62.212.228.0/24, 85.132.55.0/24, 94.20.105.0/24, 94.20.77.0/24, 77.81.60.0/24, 85.132.61.0/24, 94.20.21.0/24, 94.20.225.0/24, 85.132.71.0/24..."
+    }
+  ],
+  "start_time": "2026-05-26T00:49:08.781262"
+}

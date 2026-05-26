@@ -1,0 +1,74 @@
+{
+  "name": "20260526_004217",
+  "target": "https://azcon.gov.az/az",
+  "domain": "azcon.gov.az",
+  "threads": 10,
+  "timeout": 10,
+  "findings": [
+    {
+      "subdomain": "www.azcon.gov.az",
+      "ips": [
+        "31.170.236.167"
+      ],
+      "cname": "azcon.gov.az.",
+      "source": "dns_bruteforce",
+      "status": "alive"
+    },
+    {
+      "subdomain": "admin.azcon.gov.az",
+      "ips": [
+        "31.170.236.167"
+      ],
+      "cname": null,
+      "source": "dns_bruteforce",
+      "status": "alive"
+    },
+    {
+      "port": 80,
+      "state": "open",
+      "service": "HTTP",
+      "banner": "HTTP/1.1 403 Forbidden\r",
+      "risk": "medium"
+    },
+    {
+      "port": 443,
+      "state": "open",
+      "service": "HTTPS",
+      "banner": "HTTP/1.1 400 Bad Request\r",
+      "risk": "low"
+    },
+    {
+      "module": "Web Crawler",
+      "severity": "info",
+      "data": {
+        "pages": [
+          "https://azcon.gov.az/az"
+        ],
+        "forms": [],
+        "endpoints": [],
+        "secrets": [],
+        "js_endpoints": [],
+        "js_graphql": []
+      }
+    },
+    {
+      "type": "GCP Bucket",
+      "url": "https://storage.googleapis.com/azcon",
+      "status": "Exists (Access Denied)",
+      "severity": "info"
+    },
+    {
+      "type": "Infrastructure",
+      "severity": "info",
+      "evidence": "ASN: AS206977",
+      "detail": "Company: 31.170.236.0/24"
+    },
+    {
+      "type": "IP Prefixes",
+      "severity": "info",
+      "evidence": "Found 41 CIDR blocks",
+      "detail": "31.170.238.0/24, 178.76.5.0/24, 185.138.12.0/22, 85.132.66.0/24, 31.170.234.0/24, 31.171.115.0/24, 185.138.14.0/24, 31.170.232.0/24, 37.61.65.0/24, 178.76.4.0/24..."
+    }
+  ],
+  "start_time": "2026-05-26T00:42:17.725797"
+}

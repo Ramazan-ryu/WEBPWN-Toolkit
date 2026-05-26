@@ -252,5 +252,9 @@
   "http://itsecgames.com/": {
     "ts": 1779725762.995752,
     "cves": []
+  },
+  "https://azcon.gov.az/az": {
+    "ts": 1779741933.5225697,
+    "cves": []
   }
 }

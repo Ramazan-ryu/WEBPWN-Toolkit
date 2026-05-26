@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: WEBPWN-Toolkit
+    env: docker
+    plan: free
+    branch: main
+    healthCheckPath: /
+    envVars:
+      - key: PYTHONUTF8
+        value: "1"
